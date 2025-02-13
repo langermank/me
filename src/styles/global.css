@@ -15,10 +15,17 @@ body {
   font-weight: 400;
   font-style: normal;
   padding: 1rem;
-  padding-block-start: 4rem;
-  font-size: 1.5rem;
+  padding-block: 4rem;
   background-color: var(--bg);
   color: var(--text);
+}
+
+h1, h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.5rem;
 }
 
 li {
@@ -27,16 +34,17 @@ li {
 
 a {
   text-decoration: underline;
+  text-decoration-color: var(--link);
   text-underline-offset: 2px;
   color: var(--link);
 
   &:visited {
-    color: var(--link-visited);
+    color: var(--link);
   }
 }
 
 main {
-  max-inline-size: 50ch;
+  max-inline-size: 70ch;
   margin-inline: auto;
   display: grid;
   gap: 4rem;
@@ -70,6 +78,7 @@ main {
     background: var(--bg);
     display: inline-block;
     padding: 0 1rem;
+    font-size: 1.5rem;
     border-radius: 2px;
     font-family: "Cabin", serif;
     font-optical-sizing: auto;
