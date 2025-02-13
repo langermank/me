@@ -1,0 +1,101 @@
+@import "open-props/normalize";
+@import "open-props/colors";
+
+:root {
+  --bg: var(--sand-0);
+  --text: var(--sand-12);
+  --link: var(--indigo-7);
+  --link-visited: var(--violet-7);
+  --card-border: var(--sand-10);
+  --card-heading: var(--sand-10);
+}
+
+body {
+  font-family: system-ui,-apple-system,BlinkMacSystemFont,seravek,segoe ui,roboto,sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  padding: 1rem;
+  padding-block-start: 4rem;
+  font-size: 1.5rem;
+  background-color: var(--bg);
+  color: var(--text);
+}
+
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  color: var(--link);
+
+  &:visited {
+    color: var(--link-visited);
+  }
+}
+
+main {
+  max-inline-size: 50ch;
+  margin-inline: auto;
+  display: grid;
+  gap: 4rem;
+}
+
+.card {
+  border: 1px solid var(--card-border);
+  grid-row: auto;
+  grid-column: 1 / -1;
+  border-radius: 2px;
+  display: grid;
+  grid-template-rows: min-content auto;
+  grid-template-columns: 1fr;
+  padding: 1rem;
+  gap: 1rem;
+
+  & ul {
+    font-size: 18px;
+    font-size: 1.125rem;
+    line-height: 1.5;
+    display: grid;
+    gap: .5rem;
+  }
+}
+
+.title {
+  margin-top: -30px;
+
+  & h2 {
+    color: var(--card-heading);
+    background: var(--bg);
+    display: inline-block;
+    padding: 0 1rem;
+    border-radius: 2px;
+    font-family: "Cabin", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings: "wght" 600, "wdth" 100;
+  }
+}
+
+.links {
+  display: grid;
+  gap: 2rem;
+}
+
+.intro {
+  display: grid;
+  gap: 2rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--sand-11);
+    --text: var(--sand-1);
+    --link: var(--indigo-4);
+    --link-visited: var(--violet-3);
+    --card-border: var(--sand-2);
+    --card-heading: var(--sand-2);
+  }
+}
