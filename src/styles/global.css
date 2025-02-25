@@ -93,11 +93,11 @@ main {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: var(--stone-11);
+    --bg: var(--pink-12);
     --text: var(--stone-1);
-    --link: var(--indigo-4);
+    --link: var(--indigo-2);
     --link-visited: var(--violet-3);
-    --card-border: var(--stone-8);
-    --card-heading: var(--indigo-2);
+    --card-border: var(--pink-8);
+    --card-heading: var(--indigo-0);
   }
 }
