@@ -40,10 +40,10 @@ a {
 }
 
 main {
-  max-inline-size: 65ch;
+  max-inline-size: 64ch;
   margin-inline: auto;
   display: grid;
-  gap: 6rem;
+  gap: 7rem;
 }
 
 .card {
@@ -76,17 +76,14 @@ main {
     padding: 0 .5rem;
     font-size: 1.5rem;
     border-radius: 2px;
-    font-family: "Cabin", serif;
-    font-optical-sizing: auto;
-    font-weight: 400;
+    font-weight: 600;
     font-style: normal;
-    font-variation-settings: "wght" 600, "wdth" 100;
   }
 }
 
 .links {
   display: grid;
-  gap: 2rem;
+  gap: 3rem;
 }
 
 .intro {
