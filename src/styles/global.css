@@ -2,12 +2,12 @@
 @import "open-props/colors";
 
 :root {
-  --bg: var(--sand-0);
-  --text: var(--sand-12);
+  --bg: var(--stone-0);
+  --text: var(--stone-12);
   --link: var(--indigo-7);
   --link-visited: var(--violet-7);
-  --card-border: var(--sand-10);
-  --card-heading: var(--sand-10);
+  --card-border: var(--stone-5);
+  --card-heading: var(--stone-9);
 }
 
 body {
@@ -15,16 +15,12 @@ body {
   font-weight: 400;
   font-style: normal;
   padding: 1rem;
-  padding-block: 4rem;
+  padding-block: 5rem;
   background-color: var(--bg);
   color: var(--text);
 }
 
-h1, h2 {
-  font-size: 2rem;
-}
-
-h3 {
+h1, h2, h3 {
   font-size: 1.5rem;
 }
 
@@ -47,7 +43,7 @@ main {
   max-inline-size: 70ch;
   margin-inline: auto;
   display: grid;
-  gap: 4rem;
+  gap: 6rem;
 }
 
 .card {
@@ -59,25 +55,24 @@ main {
   grid-template-rows: min-content auto;
   grid-template-columns: 1fr;
   padding: 1rem;
-  gap: 1rem;
+  gap: .25rem;
 
   & ul {
-    font-size: 18px;
-    font-size: 1.125rem;
+    font-size: 1rem;
     line-height: 1.5;
     display: grid;
-    gap: .5rem;
+    gap: .25rem;
   }
 }
 
 .title {
-  margin-top: -30px;
+  margin-top: -31px;
 
   & h2 {
     color: var(--card-heading);
     background: var(--bg);
     display: inline-block;
-    padding: 0 1rem;
+    padding: 0 .5rem;
     font-size: 1.5rem;
     border-radius: 2px;
     font-family: "Cabin", serif;
@@ -100,11 +95,11 @@ main {
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: var(--sand-11);
-    --text: var(--sand-1);
+    --bg: var(--stone-11);
+    --text: var(--stone-1);
     --link: var(--indigo-4);
     --link-visited: var(--violet-3);
-    --card-border: var(--sand-2);
-    --card-heading: var(--sand-2);
+    --card-border: var(--stone-8);
+    --card-heading: var(--stone-2);
   }
 }
