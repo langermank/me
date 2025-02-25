@@ -10,6 +10,11 @@
   --card-heading: var(--indigo-12);
 }
 
+::selection {
+  color: #ffffff;
+  background-color: var(--indigo-8);
+}
+
 body {
   font-family: system-ui,-apple-system,BlinkMacSystemFont,seravek,segoe ui,roboto,sans-serif;
   font-weight: 400;
@@ -95,9 +100,14 @@ main {
   :root {
     --bg: var(--pink-12);
     --text: var(--stone-1);
-    --link: var(--indigo-2);
+    --link: var(--pink-2);
     --link-visited: var(--violet-3);
     --card-border: var(--pink-8);
     --card-heading: var(--indigo-0);
+  }
+
+  ::selection {
+    color: #ffffff;
+    background-color: var(--pink-8);
   }
 }
