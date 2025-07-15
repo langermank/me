@@ -1,0 +1,123 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const caseStudies = await getCollection('case-studies');
+  
+  return caseStudies
+    .filter(study => study.data.hasMore)
+    .map(study => ({
+      params: { slug: study.slug },
+      props: { study },
+    }));
+}
+
+const { study } = Astro.props;
+const { Content } = await study.render();
+---
+
+<Layout 
+  title={study.data.title} 
+  description={study.data.description}
+  ogImage={study.data.thumbnail}
+>
+    <main>
+      <article class="case-study">
+        <header class="case-study-header">
+          <h1>{study.data.title}</h1>
+          <time datetime={study.data.date.toISOString()}>
+            {new Intl.DateTimeFormat('en-US', {
+              year: 'numeric',
+              month: 'long'
+            }).format(study.data.date)}
+          </time>
+          {study.data.thumbnail && (
+            <img src={study.data.thumbnail} alt={study.data.title} class="hero-image" />
+          )}
+        </header>
+        
+        <div class="case-study-content">
+          <Content />
+        </div>
+      </article>
+    </main>
+</Layout>
+
+<style>
+  .case-study-header {
+    margin-bottom: 3rem;
+    text-align: center;
+  }
+
+  .case-study-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 1rem 0;
+    color: var(--card-heading);
+  }
+
+  .case-study-header time {
+    display: block;
+    font-size: 1rem;
+    color: var(--text);
+    opacity: 0.7;
+    margin-bottom: 2rem;
+  }
+
+  .hero-image {
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  .case-study-content {
+    max-width: 65ch;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .case-study-content :global(h1),
+  .case-study-content :global(h2),
+  .case-study-content :global(h3) {
+    color: var(--card-heading);
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .case-study-content :global(p) {
+    margin-bottom: 1.5rem;
+  }
+
+  .case-study-content :global(pre) {
+    background: var(--stone-1);
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  .case-study-content :global(code) {
+    background: var(--stone-1);
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.9em;
+  }
+
+  .case-study-content :global(pre code) {
+    background: none;
+    padding: 0;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .case-study-content :global(pre) {
+      background: var(--stone-11);
+    }
+
+    .case-study-content :global(code) {
+      background: var(--stone-11);
+    }
+  }
+</style>

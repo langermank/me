@@ -1,14 +1,24 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
-import CaseStudyCard from '../components/CaseStudyCard.astro';
-
-const caseStudies = await getCollection('case-studies');
-const sortedCaseStudies = caseStudies.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+import "../styles/global.css";
 ---
 
-<Layout title="Katie Langerman | Systems Designer">
-  <main>
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <!-- <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cabin:ital,wght@0,400..700;1,400..700&display=swap"
+      rel="stylesheet"
+    /> -->
+    <link rel="icon" type="image/svg+xml" href="/kfavicon.png" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Katie Langerman | Systems Designer</title>
+  </head>
+  <body>
+    <main>
       <section class="intro">
         <h1>I'm Katie Langerman, a Systems Designer based in San Diego.</h1>
         <h2>
@@ -47,22 +57,25 @@ const sortedCaseStudies = caseStudies.sort((a, b) => b.data.date.getTime() - a.d
             </li>
           </ul>
         </div>
-      </section>
-      
-      <section class="case-studies">
-        <h2>Case Studies</h2>
-        <div class="case-studies-grid">
-          {sortedCaseStudies.map((study) => (
-            <CaseStudyCard
-              title={study.data.title}
-              date={study.data.date}
-              thumbnail={study.data.thumbnail}
-              description={study.data.description}
-              hasMore={study.data.hasMore}
-              slug={study.slug}
-            />
-          ))}
+        <div class="card">
+          <span class="title"><h2>Find me elsewhere</h2></span>
+          <ul>
+            <li>
+              <a href="https://bsky.app/profile/katielangerman.bsky.social">Bluesky</a>
+            </li>
+            <li>
+              <a href="https://x.com/KatieLangerman">Twitter or whatever it's called</a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/langermank/">LinkedIn</a>
+            </li>
+            <li>
+              <a href="https://github.com/langermank">GitHub</a>
+            </li>
+            <li><a href="https://glass.photo/langermank">Glass</a></li>
+          </ul>
         </div>
       </section>
     </main>
-</Layout>
+  </body>
+</html>

@@ -1,0 +1,95 @@
+---
+export interface Props {
+  title: string;
+  date: Date;
+  thumbnail?: string;
+  description: string;
+  hasMore: boolean;
+  slug: string;
+}
+
+const { title, date, thumbnail, description, hasMore, slug } = Astro.props;
+
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long'
+  }).format(date);
+};
+---
+
+<article class="case-study-card">
+  {thumbnail && (
+    <div class="thumbnail">
+      <img src={thumbnail} alt={title} />
+    </div>
+  )}
+  <div class="content">
+    <h3>{title}</h3>
+    <time datetime={date.toISOString()}>{formatDate(date)}</time>
+    <p>{description}</p>
+    {hasMore && (
+      <a href={`/case-studies/${slug}`} class="read-more">Read more →</a>
+    )}
+  </div>
+</article>
+
+<style>
+  .case-study-card {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .case-study-card:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+
+  .thumbnail {
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+
+  .thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .content {
+    padding: 1.5rem;
+  }
+
+  .content h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #111827;
+  }
+
+  .content time {
+    display: block;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+  }
+
+  .content p {
+    margin: 0 0 1rem 0;
+    color: #374151;
+    line-height: 1.5;
+  }
+
+  .read-more {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .read-more:hover {
+    color: #1d4ed8;
+  }
+</style>

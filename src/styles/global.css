@@ -20,13 +20,17 @@ body {
   font-weight: 400;
   font-style: normal;
   padding: 1rem;
-  padding-block: 8rem;
+  padding-block: 2rem;
+  padding-top: 6rem;
   background-color: var(--bg);
   color: var(--text);
+  /* font-family: "Unna", serif; */
+  font-size: 20px
 }
 
 h1, h2, h3 {
   font-size: 1.5rem;
+  /* font-family: "Inria Sans", sans-serif; */
 }
 
 li {
@@ -64,7 +68,7 @@ main {
   border-radius: 5px;
 
   & ul {
-    font-size: 1rem;
+    /* font-size: 1rem; */
     line-height: 1.5;
     display: grid;
     gap: .25rem;
@@ -79,9 +83,9 @@ main {
     background: var(--bg);
     display: inline-block;
     padding: 0 .5rem;
-    font-size: 1.5rem;
+    /* font-size: 1.5rem; */
     border-radius: 2px;
-    font-weight: 600;
+    /* font-weight: 600; */
     font-style: normal;
   }
 }
@@ -92,6 +96,23 @@ main {
 }
 
 .intro {
+  display: grid;
+  gap: 2rem;
+}
+
+.case-studies {
+  display: grid;
+  gap: 2rem;
+}
+
+.case-studies h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--card-heading);
+}
+
+.case-studies-grid {
   display: grid;
   gap: 2rem;
 }

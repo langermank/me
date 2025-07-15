@@ -1,0 +1,150 @@
+---
+export interface Props {
+  currentPath: string;
+}
+
+const { currentPath } = Astro.props;
+
+const isHomePage = currentPath === '/';
+const isDiyIndex = currentPath === '/diy';
+const isDiyPost = currentPath.startsWith('/diy/') && currentPath !== '/diy';
+const isCaseStudy = currentPath.startsWith('/case-studies/');
+
+const getBreadcrumbText = () => {
+  if (isDiyIndex) return 'writing';
+  if (isDiyPost) return 'writing';
+  if (isCaseStudy) return 'work';
+  return '';
+};
+
+const breadcrumbText = getBreadcrumbText();
+---
+
+<header class="site-header">
+  <div class="header-content">
+    <div class="header-left">
+      <a href="/" class="home-link">Katie Langerman</a>
+    </div>
+
+    <nav class="header-nav">
+      <a href="/" class="nav-link">work</a>
+      <a href="/diy" class="nav-link">writing</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--bg);
+    border-bottom: 1px solid var(--card-border);
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+  }
+
+  .header-content {
+    max-width: 64ch;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+
+  .site-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0;
+    color: var(--card-heading);
+    font-family: "Inria Sans", sans-serif;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .home-link {
+    color: var(--card-heading);
+    text-decoration: none;
+    font-weight: 600;
+    font-family: "Inria Sans", sans-serif;
+    transition: color 0.2s ease;
+  }
+
+  .home-link:hover {
+    color: var(--link);
+  }
+
+  .breadcrumb-separator {
+    color: var(--text);
+    opacity: 0.5;
+  }
+
+  .current-page {
+    color: var(--text);
+    opacity: 0.7;
+    font-weight: 400;
+  }
+
+  .header-nav {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .nav-link {
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 400;
+    transition: color 0.2s ease;
+    position: relative;
+  }
+
+  .nav-link:hover {
+    color: var(--link);
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--link);
+    transition: width 0.2s ease;
+  }
+
+  .nav-link:hover::after {
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .header-content {
+      padding: 0.75rem 1rem;
+    }
+
+    .site-title,
+    .home-link {
+      font-size: 1.1rem;
+    }
+
+    .breadcrumb {
+      font-size: 1rem;
+    }
+
+    .header-nav {
+      gap: 1rem;
+    }
+  }
+</style>
