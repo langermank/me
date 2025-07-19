@@ -10,6 +10,9 @@ const isDiyIndex = currentPath === '/diy';
 const isDiyPost = currentPath.startsWith('/diy/') && currentPath !== '/diy';
 const isCaseStudy = currentPath.startsWith('/case-studies/');
 
+// Check if we're on the DIY site (separate domain)
+const isDiyDomain = Astro.site?.hostname?.includes('diy') || false;
+
 const getBreadcrumbText = () => {
   if (isDiyIndex) return 'writing';
   if (isDiyPost) return 'writing';
@@ -27,8 +30,17 @@ const breadcrumbText = getBreadcrumbText();
     </div>
 
     <nav class="header-nav">
-      <a href="/" class="nav-link">work</a>
-      <a href="/diy" class="nav-link">writing</a>
+      {isDiyDomain ? (
+        <>
+          <a href="https://katielangerman.com" class="nav-link">main site</a>
+          <a href="/" class="nav-link">diy</a>
+        </>
+      ) : (
+        <>
+          <a href="/" class="nav-link">work</a>
+          <a href="/diy" class="nav-link">writing</a>
+        </>
+      )}
     </nav>
   </div>
 </header>

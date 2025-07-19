@@ -1,0 +1,49 @@
+---
+import "../../../../packages/shared/styles/global.css";
+
+export interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const { title, description, ogImage } = Astro.props;
+
+const defaultDescription = "Katie Langerman's DIY corner - tutorials, code experiments, and creative projects.";
+const finalDescription = description || defaultDescription;
+const finalTitle = title === "DIY" ? "DIY | Katie Langerman" : `${title} | Katie Langerman`;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={finalDescription} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Unna:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/kfavicon.png" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={finalTitle} />
+    <meta property="og:description" content={finalDescription} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={finalTitle} />
+    <meta name="twitter:description" content={finalDescription} />
+    {ogImage && <meta name="twitter:image" content={ogImage} />}
+
+    <title>{finalTitle}</title>
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
