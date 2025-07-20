@@ -4,7 +4,7 @@
   "useTabs": false,
   "printWidth": 120,
   "singleQuote": true,
-  "plugins": ["prettier-plugin-astro", "prettier-plugin-tailwindcss"],
+  // "plugins": ["prettier-plugin-astro"],
   "bracketSameLine": false,
   "proseWrap": "always"
 }

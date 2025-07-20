@@ -9,60 +9,28 @@ const sortedCaseStudies = caseStudies.sort((a, b) => b.data.date.getTime() - a.d
 
 <Layout title="Katie Langerman | Systems Designer">
   <main>
-      <section class="intro">
-        <h1>I'm Katie Langerman, a Systems Designer based in San Diego.</h1>
-        <h2>
-          I work on <a href="https://primer.style/">design systems</a> at GitHub. I enjoy making the occasional <a href="https://youtu.be/3SCtFzhEyEQ">fun video</a> at work. I also co-host an interface design podcast called <a href="https://creators.spotify.com/pod/show/complementary">Complementary.</a>
-        </h2>
-        <h3>
-          Shoot me an email at <a href="mailto:langermank@gmail.com">langermank@gmail.com</a>
-        </h3>
-      </section>
-      <section class="links">
-        <div class="card">
-          <span class="title"><h2>Talks</h2></span>
-          <ul>
-            <li>
-              <a href="https://youtu.be/6l6El4xqIZ4?si=jKRNJ8Yl1_luohT9">Config 2025: Connecting code with craft</a>
-            </li>
-            <li>
-              <a href="https://www.youtube.com/watch?v=SjOieV8seec">Invisible infrastructure: How we shipped new color tokens without breaking GitHub</a>
-            </li>
-            <li>
-              <a href="https://www.youtube.com/watch?v=LN6dGGBfDYs&t=5s">Async/Await: Close collaboration across non-overlapping time zones</a>
-            </li>
-            <li>
-              <a href="https://www.youtube.com/watch?v=AtYyOGmOZkc&feature=youtu.be">Boston CSS: justify-yourself: space-between</a>
-            </li>
-          </ul>
-        </div>
-        <div class="card">
-          <span class="title"><h2>Articles & podcasts</h2></span>
-          <ul>
-            <li>
-              <a href="https://spaces.is/loversmagazine/interviews/katie-langerman">Lovers Magazine interview</a>
-            </li>
-            <li>
-              <a href="https://open.spotify.com/episode/2veWA4E4ceg7DSrw3g6MS2">Code With Jason podcast</a>
-            </li>
-          </ul>
-        </div>
-      </section>
-      
-      <section class="case-studies">
-        <h2>Case Studies</h2>
-        <div class="case-studies-grid">
-          {sortedCaseStudies.map((study) => (
-            <CaseStudyCard
-              title={study.data.title}
-              date={study.data.date}
-              thumbnail={study.data.thumbnail}
-              description={study.data.description}
-              hasMore={study.data.hasMore}
-              slug={study.slug}
-            />
-          ))}
-        </div>
-      </section>
-    </main>
+    <!-- <h1 class="site-title desktop">Katie Langerman</h1> -->
+    <section class="intro">
+      <p>I’m a Staff Systems designer at GitHub, shipping code and nudging pixels for the Primer design system.</p>
+      <p>I enjoy flexing into different domains. If there’s something that needs doing, I’ll do it.</p>
+      <p>
+        I co-host an interface design podcast called Complementary, and off screen I’m teaching myself interior design
+        and _slowly_ renovating my house.
+      </p>
+    </section>
+    <section class="post-index">
+      {
+        sortedCaseStudies.map((study) => (
+          <CaseStudyCard
+            title={study.data.title}
+            date={study.data.date}
+            thumbnail={study.data.thumbnail}
+            description={study.data.description}
+            hasMore={study.data.hasMore}
+            slug={study.slug}
+          />
+        ))
+      }
+    </section>
+  </main>
 </Layout>

@@ -1,5 +1,11 @@
-@import "open-props/normalize";
-@import "open-props/colors";
+@import 'open-props/normalize';
+@import 'open-props/colors';
+
+@property --header-height {
+  syntax: '<length-percentage>';
+  inherits: true;
+  initial-value: 150px;
+}
 
 :root {
   --bg: var(--red-0);
@@ -8,6 +14,9 @@
   --link-visited: var(--violet-7);
   --card-border: var(--stone-5);
   --card-heading: var(--indigo-12);
+  --body-fontSize: 18px;
+  --header-height: 60px;
+  --body-gap: 42px;
 }
 
 ::selection {
@@ -15,22 +24,119 @@
   background-color: var(--indigo-8);
 }
 
+html {
+  background-color: var(--bg);
+}
+
 body {
-  font-family: system-ui,-apple-system,BlinkMacSystemFont,seravek,segoe ui,roboto,sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, seravek, segoe ui, roboto, sans-serif;
   font-weight: 400;
   font-style: normal;
   padding: 1rem;
-  padding-block: 2rem;
-  padding-top: 6rem;
-  background-color: var(--bg);
+  padding-block: 1rem 4rem;
+  /* padding-top: 6rem; */
+
   color: var(--text);
-  /* font-family: "Unna", serif; */
-  font-size: 20px
+  font-size: var(--body-fontSize);
+  line-height: 1.5;
+  display: grid;
+  grid-template-areas:
+    'header'
+    'body'
+    'social';
+  grid-template-rows: repeat(auto-fit, minmax(0, auto));
+  grid-template-columns: 1fr;
 }
 
-h1, h2, h3 {
-  font-size: 1.5rem;
-  /* font-family: "Inria Sans", sans-serif; */
+.site-title {
+  font-weight: 600;
+  font-size: var(--body-fontSize);
+
+  &.desktop {
+    display: none;
+  }
+}
+
+.site-nav {
+  &.desktop {
+    display: none;
+  }
+
+  &.mobile {
+    & ul {
+      display: flex;
+      gap: 8px;
+      font-size: var(--body-fontSize);
+    }
+
+    & a {
+      text-decoration: none;
+    }
+  }
+}
+
+.headshot {
+  display: none;
+}
+
+header {
+  grid-area: header;
+  display: grid;
+  grid-template: 'title nav' auto / auto max-content;
+  padding-block: 24px;
+  margin-block-end: 16px;
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  z-index: 1;
+  align-items: center;
+}
+
+.intro {
+  display: grid;
+  gap: 16px;
+}
+
+.mobile-social-links {
+  grid-area: social;
+  padding-block: 24px;
+  margin-block-start: 16px;
+
+  & ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  & .card-title {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    & h3 {
+      font-size: var(--body-fontSize);
+      font-weight: 600;
+    }
+
+    & time {
+      color: gray;
+    }
+
+    & .separator {
+      display: none;
+    }
+  }
+}
+
+.post-index {
+  display: grid;
+  gap: 2rem;
 }
 
 li {
@@ -49,72 +155,120 @@ a {
 }
 
 main {
-  max-inline-size: 64ch;
-  margin-inline: auto;
+  grid-area: body;
+  /* max-inline-size: 64ch; */
+  /* margin-inline: auto; */
   display: grid;
-  gap: 7rem;
+  gap: 2rem;
 }
 
-.card {
-  border: 1px solid var(--card-border);
-  grid-row: auto;
-  grid-column: 1 / -1;
-  border-radius: 2px;
-  display: grid;
-  grid-template-rows: min-content auto;
-  grid-template-columns: 1fr;
-  padding: 1rem;
-  gap: .25rem;
-  border-radius: 5px;
+@media (min-width: 768px) {
+  :root {
+    --body-fontSize: 22px;
+    --header-height: 150px;
+  }
 
-  & ul {
-    /* font-size: 1rem; */
-    line-height: 1.5;
+  main {
+    max-inline-size: 64ch;
+  }
+
+  .mobile-social-links {
+    display: none;
+  }
+
+  body {
+    grid-template-areas:
+      'header header'
+      'nav body';
+    /* grid-template-rows: max-content max-content; */
+    grid-template-columns: max-content auto;
+    column-gap: var(--body-gap);
+    max-inline-size: 1620px;
+    margin: 0 auto;
+  }
+
+  .headshot {
+    display: block;
+    grid-area: image;
+    width: 100px;
+    animation: shrink-image linear both;
+    animation-timeline: scroll();
+    animation-range: 0 150px;
+  }
+
+  header {
+    grid-area: header;
     display: grid;
-    gap: .25rem;
+    /* grid-template: 'title nav' auto / auto max-content; */
+    grid-template-areas: 'image title';
+    grid-template-columns: subgrid;
+    /* column-gap: 84px; */
+    animation: shrink-header linear both;
+    animation-timeline: scroll();
+    animation-range: 0 150px;
+    height: var(--header-height);
+  }
+
+  .site-nav {
+    grid-area: nav;
+    position: sticky;
+    top: var(--header-height);
+    z-index: 2;
+    align-self: start;
+    animation: shrink-header linear both;
+    animation-timeline: scroll();
+    animation-range: 0 150px;
+
+    &.mobile {
+      display: none;
+    }
+
+    &.desktop {
+      display: block;
+    }
+
+    & ul {
+      display: flex;
+      flex-direction: column;
+      min-width: max-content;
+    }
+  }
+
+  .site-title {
+    grid-area: title;
+    /* max-inline-size: 64ch;
+    margin-inline: auto; */
+
+    &.mobile {
+      display: none;
+    }
+
+    &.desktop {
+      display: block;
+    }
+  }
+
+  .social-links {
+    grid-area: social;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-block: 24px;
+    margin-block-start: 16px;
   }
 }
 
-.title {
-  margin-top: -31px;
-
-  & h2 {
-    color: var(--card-heading);
-    background: var(--bg);
-    display: inline-block;
-    padding: 0 .5rem;
-    /* font-size: 1.5rem; */
-    border-radius: 2px;
-    /* font-weight: 600; */
-    font-style: normal;
+@media (min-width: 1220px) {
+  :root {
+    --body-gap: 120px;
   }
 }
 
-.links {
-  display: grid;
-  gap: 3rem;
-}
-
-.intro {
-  display: grid;
-  gap: 2rem;
-}
-
-.case-studies {
-  display: grid;
-  gap: 2rem;
-}
-
-.case-studies h2 {
-  margin: 0;
-  font-size: 2rem;
-  font-weight: 600;
-  color: var(--card-heading);
-}
-
-.case-studies-grid {
-  display: grid;
-  gap: 2rem;
+@media (min-width: 1440px) {
+  :root {
+    --body-gap: 220px;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -130,5 +284,18 @@ main {
   ::selection {
     color: #ffffff;
     background-color: var(--pink-8);
+  }
+}
+
+@keyframes shrink-image {
+  to {
+    width: 50px;
+    min-width: unset;
+  }
+}
+
+@keyframes shrink-header {
+  to {
+    --header-height: 100px;
   }
 }
