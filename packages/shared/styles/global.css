@@ -1,23 +1,41 @@
 @import 'open-props/normalize';
 @import 'open-props/colors';
+@import 'open-props/animations';
+@import 'open-props/easings';
 
 @property --header-height {
-  syntax: '<length-percentage>';
+  syntax: '<length>';
   inherits: true;
   initial-value: 150px;
 }
 
 @property --headshot-width {
-  syntax: '<length-percentage>';
+  syntax: '<length>';
   inherits: true;
   initial-value: 100px;
 }
 
+@property --title-opacity {
+  syntax: '<integer>';
+  inherits: true;
+  initial-value: 1;
+}
+
 :root {
-  --bg: var(--red-0);
+  --size-4: 0.25rem;
+  --size-8: 0.5rem;
+  --size-16: 1rem;
+  --size-20: 1.25rem;
+  --size-24: 1.5rem;
+  --size-28: 1.75rem;
+  --size-32: 2rem;
+  --size-48: 3rem;
+  --size-64: 4rem;
+  --bg: var(--stone-0);
   --text: var(--stone-12);
   --link: var(--indigo-7);
   --link-visited: var(--violet-7);
+  --date-color: var(--stone-8);
   --card-gap: 16px;
   --card-title-gap: 4px;
   --card-title-weight: 600;
@@ -40,11 +58,26 @@
   --social-links-margin-block: 32px;
   --post-index-gap: 2rem;
   --main-gap: 2rem;
+  --title-opacity: 1;
 }
 
 ::selection {
-  color: #ffffff;
+  color: var(--stone-0);
   background-color: var(--indigo-8);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: var(--stone-11);
+    --text: var(--stone-1);
+    --link: var(--indigo-3);
+    --link-visited: var(--indigo-3);
+    --date-color: var(--stone-6);
+  }
+
+  ::selection {
+    background-color: var(--indigo-7);
+  }
 }
 
 html {
@@ -100,8 +133,11 @@ header {
   position: sticky;
   top: 0;
   background: var(--bg);
-  z-index: 1;
+  /* z-index: 1; */
   align-items: center;
+  /* backdrop-filter: saturate(180%) blur(20px);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px; */
 }
 
 .site-title {
@@ -113,6 +149,16 @@ header {
 .site-nav {
   & a {
     text-decoration: none;
+    color: var(--text);
+    animation: var(--animation-fade-in);
+
+    &:hover {
+      color: var(--link);
+      text-decoration: underline;
+      text-decoration-color: var(--link);
+      text-underline-offset: 2px;
+      animation: var(--animation-fade-in);
+    }
   }
 
   &.desktop {
@@ -168,7 +214,7 @@ header {
     }
 
     & time {
-      color: gray;
+      color: var(--date-color);
     }
 
     & .separator {
@@ -190,13 +236,15 @@ header {
     --max-inline-body-size: 1620px;
     --card-title-gap: 16px;
     --post-index-gap: 4rem;
+    --title-fontSize: 32px;
+    --main-gap: 6rem;
   }
 
   body {
     grid-template-areas:
       'header header'
       'nav body';
-    grid-template-columns: max-content auto;
+    grid-template-columns: 100px auto;
     column-gap: var(--body-gap);
     max-inline-size: var(--max-inline-body-size);
     margin: 0 auto;
@@ -215,6 +263,13 @@ header {
     animation-range: var(--header-animation-range);
   }
 
+  .site-title {
+    animation: title-opacity linear both;
+    animation-timeline: scroll();
+    animation-range: var(--header-animation-range);
+    animation-range: 5px 100px;
+  }
+
   header {
     grid-template-areas: 'image title';
     grid-template-columns: subgrid;
@@ -222,6 +277,7 @@ header {
     animation-timeline: scroll();
     animation-range: var(--header-animation-range);
     height: var(--header-height);
+    background: transparent;
   }
 
   .site-nav {
@@ -279,22 +335,6 @@ header {
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: var(--pink-12);
-    --text: var(--stone-1);
-    --link: var(--pink-2);
-    --link-visited: var(--violet-3);
-    --card-border: var(--pink-8);
-    --card-heading: var(--indigo-0);
-  }
-
-  ::selection {
-    color: #ffffff;
-    background-color: var(--pink-8);
-  }
-}
-
 @keyframes shrink-image {
   to {
     --headshot-width: 50px;
@@ -306,4 +346,20 @@ header {
   to {
     --header-height: 100px;
   }
+}
+
+@keyframes title-opacity {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    /* translate: 0 calc(-1 * var(--header-height)); */
+  }
+}
+
+.bg-dots {
+  background: linear-gradient(90deg, #f9fafb 15px, transparent 1%) 50%,
+    linear-gradient(#f9fafb 15px, transparent 1%) 50%, rgba(0, 0, 0, 0.24);
+  background-size: 16px 16px;
 }
