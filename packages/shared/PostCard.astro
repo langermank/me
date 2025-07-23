@@ -1,0 +1,48 @@
+---
+export interface Props {
+  title: string;
+  date: Date;
+  thumbnail?: string;
+  description: string;
+  hasMore: boolean;
+  slug: string;
+  linkPrefix?: string; // Allow customizable link prefix (e.g., '/case-studies' or '/diy')
+}
+
+const { title, date, thumbnail, description, hasMore, slug, linkPrefix = '' } = Astro.props;
+
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+  }).format(date);
+};
+
+const postUrl = linkPrefix ? `${linkPrefix}/${slug}` : `/${slug}`;
+---
+
+<article class="card">
+  <div class="card-title">
+    <time datetime={date.toISOString()}>{formatDate(date)}</time>
+    <span aria-hidden="true" class="separator">·</span>
+    {
+      hasMore ? (
+        <h3>
+          <a href={postUrl} class="read-more">
+            {title}
+          </a>
+        </h3>
+      ) : (
+        <h3>{title}</h3>
+      )
+    }
+  </div>
+  <p>{description}</p>
+  {
+    thumbnail && (
+      <div class="thumbnail">
+        <img src={thumbnail} alt={title} />
+      </div>
+    )
+  }
+</article>

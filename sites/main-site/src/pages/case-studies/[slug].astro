@@ -1,5 +1,5 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '../../../../../packages/shared/Layout.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
@@ -21,6 +21,7 @@ const { Content } = await study.render();
   title={study.data.title} 
   description={study.data.description}
   ogImage={study.data.thumbnail}
+  siteType="main"
 >
     <main>
       <article class="case-study">

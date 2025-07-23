@@ -1,5 +1,6 @@
 @import 'open-props/normalize';
 @import 'open-props/colors';
+@import 'open-props/colors-hsl.min.css';
 @import 'open-props/animations';
 @import 'open-props/easings';
 
@@ -36,14 +37,14 @@
   --link: var(--indigo-7);
   --link-visited: var(--violet-7);
   --date-color: var(--stone-8);
-  --card-gap: 16px;
-  --card-title-gap: 4px;
+  --card-gap: var(--size-16);
+  --card-title-gap: var(--size-4);
   --card-title-weight: 600;
   --body-fontSize: 18px;
   --body-lineHeight: 1.5;
   --header-height: 60px;
   --header-padding-block: 24px;
-  --header-margin-block-end: 16px;
+  --header-margin-block-end: var(--size-16);
   --body-gap: 42px;
   --body-font: system-ui, -apple-system, BlinkMacSystemFont, seravek, segoe ui, roboto, sans-serif;
   --body-padding: 1rem;
@@ -53,12 +54,14 @@
   --header-animation-range: 0 150px;
   --header-animation: shrink-header linear both;
   --headshot-width: 100px;
-  --intro-gap: 16px;
-  --social-links-gap: 8px;
-  --social-links-margin-block: 32px;
-  --post-index-gap: 2rem;
-  --main-gap: 2rem;
+  --intro-gap: var(--size-16);
+  --social-links-gap: var(--size-8);
+  --social-links-margin-block: var(--size-32);
+  --post-index-gap: var(--size-32);
+  --main-gap: var(--size-32);
   --title-opacity: 1;
+  --diy-card-bg: #fcfdfd;
+  --diy-card-border: hsl(var(--stone-5-hsl) / 40%);
 }
 
 ::selection {
@@ -169,7 +172,7 @@ header {
   &.mobile {
     & ul {
       display: flex;
-      gap: 8px;
+      gap: var(--size-8);
       font-size: var(--body-fontSize);
     }
   }
@@ -228,13 +231,26 @@ header {
   gap: var(--post-index-gap);
 }
 
+.diy-site {
+  background: linear-gradient(90deg, var(--bg) 15px, transparent 1%) 50%,
+    linear-gradient(var(--bg) 15px, transparent 1%) 50%, hsl(var(--stone-5-hsl) / 80%);
+  background-size: var(--size-16) var(--size-16);
+
+  & .card {
+    background: var(--diy-card-bg);
+    border: solid 1px var(--diy-card-border);
+    padding: calc(var(--post-index-gap) / 2);
+    border-radius: 6px;
+  }
+}
+
 @media (min-width: 768px) {
   :root {
     --body-fontSize: 22px;
     --header-height: 150px;
     --max-inline-size: 64ch;
     --max-inline-body-size: 1620px;
-    --card-title-gap: 16px;
+    --card-title-gap: var(--size-16);
     --post-index-gap: 4rem;
     --title-fontSize: 32px;
     --main-gap: 6rem;
@@ -356,10 +372,4 @@ header {
     opacity: 0;
     /* translate: 0 calc(-1 * var(--header-height)); */
   }
-}
-
-.bg-dots {
-  background: linear-gradient(90deg, #f9fafb 15px, transparent 1%) 50%,
-    linear-gradient(#f9fafb 15px, transparent 1%) 50%, rgba(0, 0, 0, 0.24);
-  background-size: 16px 16px;
 }

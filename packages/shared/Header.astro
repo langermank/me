@@ -2,6 +2,13 @@
 import Socials from './Socials.astro';
 
 const isDiyDomain = Astro.site?.hostname?.includes('diy') || false;
+
+// Dynamic URL configuration
+const mainSiteUrl = import.meta.env.PROD ? 'https://katielangerman.com' : 'http://localhost:4321';
+const diySiteUrl = import.meta.env.PROD ? 'https://katielangerman.diy' : 'http://localhost:4322';
+
+const workUrl = isDiyDomain ? mainSiteUrl : '/';
+const notWorkUrl = isDiyDomain ? '/' : diySiteUrl;
 ---
 
 <header>
@@ -10,10 +17,10 @@ const isDiyDomain = Astro.site?.hostname?.includes('diy') || false;
   <nav class="site-nav mobile">
     <ul>
       <li>
-        <a href="">Work</a>
+        <a href={workUrl}>Work</a>
       </li>
       <li>
-        <a href="">Not work</a>
+        <a href={notWorkUrl}>Not work</a>
       </li>
     </ul>
   </nav>
@@ -22,10 +29,10 @@ const isDiyDomain = Astro.site?.hostname?.includes('diy') || false;
 <nav class="site-nav desktop">
   <ul>
     <li>
-      <a href="">Work</a>
+      <a href={workUrl}>Work</a>
     </li>
     <li>
-      <a href="">Not work</a>
+      <a href={notWorkUrl}>Not work</a>
     </li>
   </ul>
   <Socials />

@@ -1,129 +1,42 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../../../packages/shared/Layout.astro';
 import { getCollection } from 'astro:content';
+import PostCard from '../../../../packages/shared/PostCard.astro';
 
 const diyPosts = await getCollection('diy');
 const sortedPosts = diyPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
-
-const formatDate = (date: Date) => {
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  }).format(date);
-};
 ---
 
-<Layout
-  title="DIY"
-  description="DIY tutorials, code experiments, and creative projects by Katie Langerman"
->
+<Layout title="DIY" description="DIY tutorials, code experiments, and creative projects by Katie Langerman" siteType="diy">
   <main>
-    <header class="diy-header">
-      <h1>DIY</h1>
-      <p class="diy-intro">
-        Welcome to my DIY corner! Here you'll find tutorials, code experiments,
-        and creative projects I'm working on. From quick tips to deep dives,
-        it's all about learning and building things.
+    <section class="intro">
+      <p>I’m a Staff Systems designer at GitHub, shipping code and nudging pixels for the Primer design system.</p>
+      <p>I enjoy flexing into different domains. If there’s something that needs doing, I’ll do it.</p>
+      <p>
+        I co-host an interface design podcast called Complementary, and off screen I’m teaching myself interior design
+        and _slowly_ renovating my house.
       </p>
-    </header>
+    </section>
 
     <section class="diy-posts">
-      {sortedPosts.length === 0 ? (
-        <p class="no-posts">No DIY posts yet. Check back soon!</p>
-      ) : (
-        <ul class="posts-list">
-          {sortedPosts.map((post) => (
-            <li class="post-item">
-              <a href={`/${post.slug}`} class="post-link">
-                <h2 class="post-title">{post.data.title}</h2>
-                <time datetime={post.data.date.toISOString()} class="post-date">
-                  {formatDate(post.data.date)}
-                </time>
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
+      {
+        sortedPosts.length === 0 ? (
+          <p class="no-posts">No DIY posts yet. Check back soon!</p>
+        ) : (
+          <div class="post-index">
+            {sortedPosts.map((post) => (
+              <PostCard
+                title={post.data.title}
+                date={post.data.date}
+                thumbnail={post.data.thumbnail}
+                description={post.data.description || post.data.title}
+                hasMore={true}
+                slug={post.slug}
+              />
+            ))}
+          </div>
+        )
+      }
     </section>
   </main>
 </Layout>
-
-<style>
-  .diy-header {
-    margin-bottom: 3rem;
-    text-align: center;
-  }
-
-  .diy-header h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0 0 1rem 0;
-    color: var(--card-heading);
-  }
-
-  .diy-intro {
-    font-size: 1.1rem;
-    color: var(--text);
-    opacity: 0.8;
-    max-width: 60ch;
-    margin: 0 auto;
-    line-height: 1.5;
-  }
-
-  .diy-posts {
-    max-width: 65ch;
-    margin: 0 auto;
-  }
-
-  .no-posts {
-    color: var(--text);
-    opacity: 0.7;
-    font-style: italic;
-    text-align: center;
-  }
-
-  .posts-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .post-item {
-    border-bottom: 1px solid var(--card-border);
-    padding: 1.5rem 0;
-  }
-
-  .post-item:last-child {
-    border-bottom: none;
-  }
-
-  .post-link {
-    display: block;
-    text-decoration: none;
-    color: inherit;
-    transition: all 0.2s ease;
-  }
-
-  .post-link:hover {
-    transform: translateX(4px);
-  }
-
-  .post-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    margin: 0 0 0.5rem 0;
-    color: var(--card-heading);
-    transition: color 0.2s ease;
-  }
-
-  .post-link:hover .post-title {
-    color: var(--link);
-  }
-
-  .post-date {
-    font-size: 0.9rem;
-    color: var(--text);
-    opacity: 0.7;
-  }
-</style>
