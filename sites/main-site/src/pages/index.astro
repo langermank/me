@@ -2,9 +2,29 @@
 import Layout from '../../../../packages/shared/Layout.astro';
 import { getCollection } from 'astro:content';
 import PostCard from '../../../../packages/shared/PostCard.astro';
+import { POST_TYPES, getPostTypeById } from '../../../../packages/shared/postTypes';
 
 const caseStudies = await getCollection('case-studies');
 const sortedCaseStudies = caseStudies.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Get unique types present in content and their display labels
+const uniqueTypeIds = [...new Set(caseStudies.map((study) => study.data.type))];
+const availableTypes = uniqueTypeIds
+  .map((id) => getPostTypeById(id))
+  .filter(Boolean)
+  .sort((a, b) => a.label.localeCompare(b.label));
+
+// Generate entire select HTML for use in Fragment
+const optionsHtml = availableTypes
+  .map((type) => {
+    // const count = caseStudies.filter((study) => study.data.type === type.id).length;
+    return `<option value="${type.id}">${type.label}</option>`;
+  })
+  .join('');
+
+//<span aria-hidden="true" class="option-label">Type:</span>
+
+const selectHtml = `<label for="type-filter" class="sr-only">Project type</label><select id="type-filter" class="type-filter"><button><span class="select-control"><selectedcontent></selectedcontent></span><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M181.66,170.34a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L128,212.69l42.34-42.35A8,8,0,0,1,181.66,170.34Zm-96-84.68L128,43.31l42.34,42.35a8,8,0,0,0,11.32-11.32l-48-48a8,8,0,0,0-11.32,0l-48,48A8,8,0,0,0,85.66,85.66Z"></path></svg></button><option value="all">All</option>${optionsHtml}</select>`;
 ---
 
 <Layout title="Katie Langerman | Systems Designer" siteType="main">
@@ -17,20 +37,124 @@ const sortedCaseStudies = caseStudies.sort((a, b) => b.data.date.getTime() - a.d
         and _slowly_ renovating my house.
       </p>
     </section>
-    <section class="post-index">
-      {
-        sortedCaseStudies.map((study) => (
-          <PostCard
-            title={study.data.title}
-            date={study.data.date}
-            thumbnail={study.data.thumbnail}
-            description={study.data.description}
-            hasMore={study.data.hasMore}
-            slug={study.slug}
-            linkPrefix="/case-studies"
-          />
-        ))
-      }
+    <section class="work">
+      <div class="filter">
+        <ol class="breadcrumb">
+          <li>Work</li>
+          <li><Fragment set:html={selectHtml} /></li>
+        </ol>
+      </div>
+
+      <div class="post-index" id="post-container">
+        {
+          sortedCaseStudies.map((study) => (
+            <PostCard
+              title={study.data.title}
+              date={study.data.date}
+              thumbnail={study.data.thumbnail}
+              description={study.data.description}
+              hasMore={study.data.hasMore}
+              slug={study.slug}
+              linkPrefix="/case-studies"
+              type={study.data.type}
+            />
+          ))
+        }
+      </div>
     </section>
   </main>
 </Layout>
+
+<script>
+  class PostFilter {
+    constructor() {
+      this.container = document.getElementById('post-container');
+      this.filter = document.getElementById('type-filter');
+      this.selectLabel = document.getElementById('select-label');
+      this.cards = Array.from(document.querySelectorAll('.card[data-type]'));
+
+      this.init();
+    }
+
+    init() {
+      if (!this.filter || !this.container) return;
+
+      this.filter.addEventListener('change', (e) => {
+        this.updateSelectLabel(e.target.value);
+        this.filterPosts(e.target.value);
+      });
+    }
+
+    updateSelectLabel(selectedValue) {
+      if (!this.selectLabel) return;
+
+      const selectedOption = this.filter.options[this.filter.selectedIndex];
+      const displayText = selectedOption.textContent.trim();
+      this.selectLabel.textContent = `Type: ${displayText}`;
+    }
+
+    async filterPosts(selectedType) {
+      const visibleCards =
+        selectedType === 'all' ? this.cards : this.cards.filter((card) => card.dataset.type === selectedType);
+
+      const hiddenCards = this.cards.filter((card) => !visibleCards.includes(card));
+
+      // Animate out hidden cards
+      hiddenCards.forEach((card) => {
+        card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(-10px)';
+      });
+
+      // Wait for animation to complete
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      // Hide cards and update layout
+      hiddenCards.forEach((card) => {
+        card.style.display = 'none';
+      });
+
+      // Show visible cards with animation
+      visibleCards.forEach((card, index) => {
+        card.style.display = 'flex';
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(10px)';
+
+        // Stagger the animations
+        setTimeout(() => {
+          card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, index * 100);
+      });
+
+      // Update URL without page reload for better UX
+      const url = new URL(window.location.href);
+      if (selectedType === 'all') {
+        url.searchParams.delete('type');
+      } else {
+        url.searchParams.set('type', selectedType);
+      }
+      window.history.replaceState({}, '', url);
+    }
+  }
+
+  // Initialize when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    const postFilter = new PostFilter();
+
+    // Handle initial filter from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const typeParam = urlParams.get('type');
+    if (typeParam) {
+      const filterSelect = document.getElementById('type-filter');
+      if (filterSelect) {
+        filterSelect.value = typeParam;
+        filterSelect.dispatchEvent(new Event('change'));
+      }
+    } else {
+      // Update label for initial state
+      postFilter.updateSelectLabel('all');
+    }
+  });
+</script>

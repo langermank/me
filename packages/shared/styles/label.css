@@ -1,0 +1,45 @@
+:root {
+  --label-1-bgColor: var(--purple-3);
+  --label-1-fgColor: var(--purple-9);
+  --label-2-bgColor: var(--camo-3);
+  --label-2-fgColor: var(--camo-9);
+  --label-3-bgColor: var(--cyan-3);
+  --label-3-fgColor: var(--cyan-9);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --label-1-bgColor: var(--purple-9);
+    --label-1-fgColor: var(--purple-2);
+    --label-2-bgColor: var(--camo-9);
+    --label-2-fgColor: var(--camo-2);
+    --label-3-bgColor: var(--cyan-9);
+    --label-3-fgColor: var(--cyan-2);
+  }
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--label-borderRadius);
+  white-space: nowrap;
+  padding: 2px 6px;
+  font-size: var(--label-fontSize);
+  place-self: start;
+  text-transform: lowercase;
+
+  &[data-type='visual-polish'] {
+    background: var(--label-1-bgColor);
+    color: var(--label-1-fgColor);
+  }
+
+  &[data-type='component-api'] {
+    background: var(--label-2-bgColor);
+    color: var(--label-2-fgColor);
+  }
+
+  &[data-type='design-tokens'] {
+    background: var(--label-3-bgColor);
+    color: var(--label-3-fgColor);
+  }
+}

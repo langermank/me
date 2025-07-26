@@ -8,6 +8,7 @@ const caseStudies = defineCollection({
     thumbnail: z.string().optional(),
     description: z.string(),
     hasMore: z.boolean().default(false),
+    type: z.string(),
   }),
 });
 

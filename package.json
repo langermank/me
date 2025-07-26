@@ -15,8 +15,8 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/mdx": "^4.3.0",
-    "astro": "^5.11.0",
+    "@astrojs/mdx": "^4.3.1",
+    "astro": "^5.12.3",
     "open-props": "^1.7.12"
   }
 }
