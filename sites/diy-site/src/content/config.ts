@@ -20,6 +20,6 @@ const diy = defineCollection({
 });
 
 export const collections = {
-  'case-studies': caseStudies,
-  'diy': diy,
+  work: caseStudies,
+  diy: diy,
 };

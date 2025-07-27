@@ -16,6 +16,14 @@ export const POST_TYPES: PostType[] = [
     id: 'design-tokens',
     label: 'Design tokens',
   },
+  {
+    id: 'talk',
+    label: 'Talk',
+  },
+  {
+    id: 'article',
+    label: 'Article',
+  },
 ];
 
 export function getPostType(id: string): PostType | undefined {

@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import PostCard from '../../../../packages/shared/PostCard.astro';
 import { POST_TYPES, getPostTypeById } from '../../../../packages/shared/postTypes';
 
-const caseStudies = await getCollection('case-studies');
+const caseStudies = await getCollection('work');
 const sortedCaseStudies = caseStudies.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 
 // Get unique types present in content and their display labels
@@ -34,7 +34,7 @@ const selectHtml = `<label for="type-filter" class="sr-only">Project type</label
       <p>I enjoy flexing into different domains. If there’s something that needs doing, I’ll do it.</p>
       <p>
         I co-host an interface design podcast called Complementary, and off screen I’m teaching myself interior design
-        and _slowly_ renovating my house.
+        and slowly renovating my house.
       </p>
     </section>
     <section class="work">
@@ -55,8 +55,9 @@ const selectHtml = `<label for="type-filter" class="sr-only">Project type</label
               description={study.data.description}
               hasMore={study.data.hasMore}
               slug={study.slug}
-              linkPrefix="/case-studies"
+              linkPrefix="/work"
               type={study.data.type}
+              externalUrl={study.data.externalUrl}
             />
           ))
         }

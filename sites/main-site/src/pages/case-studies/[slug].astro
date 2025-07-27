@@ -3,11 +3,11 @@ import Layout from '../../../../../packages/shared/Layout.astro';
 import { getCollection } from 'astro:content';
 
 export async function getStaticPaths() {
-  const caseStudies = await getCollection('case-studies');
-  
+  const caseStudies = await getCollection('work');
+
   return caseStudies
-    .filter(study => study.data.hasMore)
-    .map(study => ({
+    .filter((study) => study.data.hasMore)
+    .map((study) => ({
       params: { slug: study.slug },
       props: { study },
     }));
@@ -17,32 +17,27 @@ const { study } = Astro.props;
 const { Content } = await study.render();
 ---
 
-<Layout 
-  title={study.data.title} 
-  description={study.data.description}
-  ogImage={study.data.thumbnail}
-  siteType="main"
->
-    <main>
-      <article class="case-study">
-        <header class="case-study-header">
-          <h1>{study.data.title}</h1>
-          <time datetime={study.data.date.toISOString()}>
-            {new Intl.DateTimeFormat('en-US', {
+<Layout title={study.data.title} description={study.data.description} ogImage={study.data.thumbnail} siteType="main">
+  <main>
+    <article class="case-study">
+      <header class="case-study-header">
+        <h1>{study.data.title}</h1>
+        <time datetime={study.data.date.toISOString()}>
+          {
+            new Intl.DateTimeFormat('en-US', {
               year: 'numeric',
-              month: 'long'
-            }).format(study.data.date)}
-          </time>
-          {study.data.thumbnail && (
-            <img src={study.data.thumbnail} alt={study.data.title} class="hero-image" />
-          )}
-        </header>
-        
-        <div class="case-study-content">
-          <Content />
-        </div>
-      </article>
-    </main>
+              month: 'long',
+            }).format(study.data.date)
+          }
+        </time>
+        {study.data.thumbnail && <img src={study.data.thumbnail} alt={study.data.title} class="hero-image" />}
+      </header>
+
+      <div class="case-study-content">
+        <Content />
+      </div>
+    </article>
+  </main>
 </Layout>
 
 <style>

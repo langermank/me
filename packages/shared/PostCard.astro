@@ -8,11 +8,12 @@ export interface Props {
   description: string;
   hasMore: boolean;
   slug: string;
-  linkPrefix?: string; // Allow customizable link prefix (e.g., '/case-studies' or '/diy')
+  linkPrefix?: string; // Allow customizable link prefix (e.g., '/work' or '/diy')
   type?: string; // Optional type for filtering
+  externalUrl?: string; // Optional external URL for the title
 }
 
-const { title, date, thumbnail, description, hasMore, slug, linkPrefix = '', type } = Astro.props;
+const { title, date, thumbnail, description, hasMore, slug, linkPrefix = '', type, externalUrl } = Astro.props;
 
 const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('en-US', {
@@ -29,7 +30,13 @@ const postUrl = linkPrefix ? `${linkPrefix}/${slug}` : `/${slug}`;
     <time datetime={date.toISOString()}>{formatDate(date)}</time>
     <span aria-hidden="true" class="separator">·</span>
     {
-      hasMore ? (
+      externalUrl ? (
+        <h3>
+          <a href={externalUrl} target="_blank" rel="noopener noreferrer" class="external-link">
+            {title}
+          </a>
+        </h3>
+      ) : hasMore ? (
         <h3>
           <a href={postUrl} class="read-more">
             {title}

@@ -9,6 +9,7 @@ const caseStudies = defineCollection({
     description: z.string(),
     hasMore: z.boolean().default(false),
     type: z.string(),
+    externalUrl: z.string().optional(),
   }),
 });
 
@@ -21,6 +22,6 @@ const diy = defineCollection({
 });
 
 export const collections = {
-  'case-studies': caseStudies,
-  'diy': diy,
+  work: caseStudies,
+  diy: diy,
 };
