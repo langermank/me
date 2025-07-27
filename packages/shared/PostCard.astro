@@ -1,0 +1,59 @@
+---
+import Label from './Label.astro';
+
+export interface Props {
+  title: string;
+  date: Date;
+  thumbnail?: string;
+  description: string;
+  hasMore: boolean;
+  slug: string;
+  linkPrefix?: string; // Allow customizable link prefix (e.g., '/work' or '/diy')
+  type?: string; // Optional type for filtering
+  externalUrl?: string; // Optional external URL for the title
+}
+
+const { title, date, thumbnail, description, hasMore, slug, linkPrefix = '', type, externalUrl } = Astro.props;
+
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+  }).format(date);
+};
+
+const postUrl = linkPrefix ? `${linkPrefix}/${slug}` : `/${slug}`;
+---
+
+<article class="card" data-type={type}>
+  <div class="card-title">
+    <time datetime={date.toISOString()}>{formatDate(date)}</time>
+    <span aria-hidden="true" class="separator">·</span>
+    {
+      externalUrl ? (
+        <h3>
+          <a href={externalUrl} target="_blank" rel="noopener noreferrer" class="external-link">
+            {title}
+          </a>
+        </h3>
+      ) : hasMore ? (
+        <h3>
+          <a href={postUrl} class="read-more">
+            {title}
+          </a>
+        </h3>
+      ) : (
+        <h3>{title}</h3>
+      )
+    }
+  </div>
+  {type && <Label type={type} />}
+  <p>{description}</p>
+  {
+    thumbnail && (
+      <div class="thumbnail">
+        <img src={thumbnail} alt={title} />
+      </div>
+    )
+  }
+</article>

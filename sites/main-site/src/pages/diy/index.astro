@@ -1,0 +1,112 @@
+---
+import Layout from '../../../../../packages/shared/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const diyPosts = await getCollection('diy');
+const sortedPosts = diyPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const formatDate = (date: Date) => {
+  return new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  }).format(date);
+};
+---
+
+<Layout 
+  title="DIY" 
+  description="DIY posts by Katie Langerman"
+>
+    <main>
+      <header class="diy-header">
+        <h1>DIY</h1>
+      </header>
+      
+      <section class="diy-posts">
+        {sortedPosts.length === 0 ? (
+          <p class="no-posts">No DIY posts yet. Check back soon!</p>
+        ) : (
+          <ul class="posts-list">
+            {sortedPosts.map((post) => (
+              <li class="post-item">
+                <a href={`/diy/${post.slug}`} class="post-link">
+                  <h2 class="post-title">{post.data.title}</h2>
+                  <time datetime={post.data.date.toISOString()} class="post-date">
+                    {formatDate(post.data.date)}
+                  </time>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    </main>
+</Layout>
+
+<style>
+  .diy-header {
+    margin-bottom: 3rem;
+  }
+
+  .diy-header h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0;
+    color: var(--card-heading);
+  }
+
+  .diy-posts {
+    max-width: 65ch;
+  }
+
+  .no-posts {
+    color: var(--text);
+    opacity: 0.7;
+    font-style: italic;
+  }
+
+  .posts-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .post-item {
+    border-bottom: 1px solid var(--card-border);
+    padding: 1.5rem 0;
+  }
+
+  .post-item:last-child {
+    border-bottom: none;
+  }
+
+  .post-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s ease;
+  }
+
+  .post-link:hover {
+    transform: translateX(4px);
+  }
+
+  .post-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+    color: var(--card-heading);
+    transition: color 0.2s ease;
+  }
+
+  .post-link:hover .post-title {
+    color: var(--link);
+  }
+
+  .post-date {
+    font-size: 0.9rem;
+    color: var(--text);
+    opacity: 0.7;
+  }
+</style>

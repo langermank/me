@@ -1,0 +1,39 @@
+---
+import Socials from './Socials.astro';
+
+const isDiyDomain = Astro.site?.hostname?.includes('diy') || false;
+
+// Dynamic URL configuration
+const mainSiteUrl = import.meta.env.PROD ? 'https://katielangerman.com' : 'http://localhost:4321';
+const diySiteUrl = import.meta.env.PROD ? 'https://katielangerman.diy' : 'http://localhost:4322';
+
+const workUrl = isDiyDomain ? mainSiteUrl : '/';
+const notWorkUrl = isDiyDomain ? '/' : diySiteUrl;
+---
+
+<header>
+  <img class="headshot" src="https://placehold.co/100x100" />
+  <h1 class="site-title">Katie Langerman</h1>
+  <nav class="site-nav mobile">
+    <ul>
+      <li>
+        <a href={workUrl}>Work</a>
+      </li>
+      <li>
+        <a href={notWorkUrl}>Not work</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<nav class="site-nav desktop">
+  <ul>
+    <li>
+      <a href={workUrl}>Work</a>
+    </li>
+    <li>
+      <a href={notWorkUrl}>Not work</a>
+    </li>
+  </ul>
+  <Socials />
+</nav>

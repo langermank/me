@@ -1,0 +1,42 @@
+---
+import Layout from '../../../../packages/shared/Layout.astro';
+import { getCollection } from 'astro:content';
+import PostCard from '../../../../packages/shared/PostCard.astro';
+
+const diyPosts = await getCollection('diy');
+const sortedPosts = diyPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<Layout title="DIY" description="DIY tutorials, code experiments, and creative projects by Katie Langerman" siteType="diy">
+  <main>
+    <section class="intro">
+      <p>I’m a Staff Systems designer at GitHub, shipping code and nudging pixels for the Primer design system.</p>
+      <p>I enjoy flexing into different domains. If there’s something that needs doing, I’ll do it.</p>
+      <p>
+        I co-host an interface design podcast called Complementary, and off screen I’m teaching myself interior design
+        and _slowly_ renovating my house.
+      </p>
+    </section>
+
+    <section class="diy-posts">
+      {
+        sortedPosts.length === 0 ? (
+          <p class="no-posts">No DIY posts yet. Check back soon!</p>
+        ) : (
+          <div class="post-index">
+            {sortedPosts.map((post) => (
+              <PostCard
+                title={post.data.title}
+                date={post.data.date}
+                thumbnail={post.data.thumbnail}
+                description={post.data.description || post.data.title}
+                hasMore={true}
+                slug={post.slug}
+              />
+            ))}
+          </div>
+        )
+      }
+    </section>
+  </main>
+</Layout>

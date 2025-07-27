@@ -1,0 +1,18 @@
+---
+import { getPostType } from './postTypes';
+import './styles/label.css';
+
+export interface Props {
+  type: string;
+}
+
+const { type } = Astro.props;
+
+const postType = getPostType(type);
+const displayLabel = postType?.label || type;
+const typeId = postType?.id || type;
+---
+
+<span class="label" data-type={typeId}>
+  {displayLabel}
+</span>
