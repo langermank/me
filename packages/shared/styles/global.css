@@ -58,7 +58,8 @@
   --header-animation: shrink-header linear both;
   --headshot-width: 100px;
   --intro-gap: var(--size-16);
-  --social-links-gap: var(--size-16);
+  --intro-margin-block-start: var(--header-margin-block-end);
+  --social-links-gap: var(--size-8);
   --social-links-margin-block: var(--size-32);
   --post-index-gap: var(--size-32);
   --main-gap: var(--size-32);
@@ -370,10 +371,6 @@ header {
         transform: translate(-50%,-50%);
       }
     }
-
-    & ul {
-      gap: var(--social-links-gap);
-    }
   }
 
   &.desktop {
@@ -401,7 +398,7 @@ header {
 .intro {
   display: grid;
   gap: var(--intro-gap);
-  margin-block-start: var(--header-margin-block-end);
+  margin-block-start: var(--intro-margin-block-start);
 }
 
 .social-links {
@@ -487,6 +484,7 @@ header {
     --post-index-gap: 4rem;
     --title-fontSize: 32px;
     --main-gap: 4rem;
+    --intro-margin-block-start: 0;
   }
 
   body {
@@ -553,6 +551,7 @@ header {
       display: flex;
       flex-direction: column;
       min-width: max-content;
+      gap: var(--social-links-gap);
     }
   }
 
