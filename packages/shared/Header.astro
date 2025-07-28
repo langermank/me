@@ -1,5 +1,14 @@
 ---
 import Socials from './Socials.astro';
+import { Image } from 'astro:assets';
+import lightHeadshot from './images/headshot-light.jpg';
+import darkHeadshot from './images/headshot-dark.jpg';
+
+export interface Props {
+  currentPath?: string;
+}
+
+const { currentPath = Astro.url.pathname } = Astro.props;
 
 const isDiyDomain = Astro.site?.hostname?.includes('diy') || false;
 
@@ -9,18 +18,30 @@ const diySiteUrl = import.meta.env.PROD ? 'https://katielangerman.diy' : 'http:/
 
 const workUrl = isDiyDomain ? mainSiteUrl : '/';
 const notWorkUrl = isDiyDomain ? '/' : diySiteUrl;
+
+// Determine current page for aria-current
+const isOnWorkSite = !isDiyDomain; // Main site is "work"
+const isOnDiySite = isDiyDomain; // DIY site is "not work"
 ---
 
 <header>
-  <img class="headshot" src="https://placehold.co/100x100" />
+  <picture class="headshot">
+    <source media="(prefers-color-scheme: dark)" srcset={darkHeadshot.src} />
+    <source media="(prefers-color-scheme: light)" srcset={lightHeadshot.src} />
+    <Image
+      src={darkHeadshot}
+      alt="Katie Langerman"
+
+    />
+  </picture>
   <h1 class="site-title">Katie Langerman</h1>
   <nav class="site-nav mobile">
     <ul>
       <li>
-        <a href={workUrl}>Work</a>
+        <a href={workUrl} aria-current={isOnWorkSite ? 'page' : undefined}>Work</a>
       </li>
       <li>
-        <a href={notWorkUrl}>Not work</a>
+        <a href={notWorkUrl} aria-current={isOnDiySite ? 'page' : undefined}>Not work</a>
       </li>
     </ul>
   </nav>
@@ -29,10 +50,10 @@ const notWorkUrl = isDiyDomain ? '/' : diySiteUrl;
 <nav class="site-nav desktop">
   <ul>
     <li>
-      <a href={workUrl}>Work</a>
+      <a href={workUrl} aria-current={isOnWorkSite ? 'page' : undefined}>Work</a>
     </li>
     <li>
-      <a href={notWorkUrl}>Not work</a>
+      <a href={notWorkUrl} aria-current={isOnDiySite ? 'page' : undefined}>Not work</a>
     </li>
   </ul>
   <Socials />
