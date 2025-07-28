@@ -305,6 +305,7 @@ body {
     'body'
     'social';
   grid-template-columns: 1fr;
+  grid-auto-rows: min-content;
 }
 
 main {
@@ -479,7 +480,7 @@ header {
     --card-title-gap: var(--size-16);
     --post-index-gap: 4rem;
     --title-fontSize: 32px;
-    --main-gap: 6rem;
+    --main-gap: 4rem;
   }
 
   body {

@@ -4,11 +4,6 @@ import { Image } from 'astro:assets';
 import lightHeadshot from './images/headshot-light.jpg';
 import darkHeadshot from './images/headshot-dark.jpg';
 
-export interface Props {
-  currentPath?: string;
-}
-
-const { currentPath = Astro.url.pathname } = Astro.props;
 
 const isDiyDomain = Astro.site?.hostname?.includes('diy') || false;
 
