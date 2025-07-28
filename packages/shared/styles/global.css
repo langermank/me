@@ -70,6 +70,7 @@
 :root {
   --bg: var(--stone-0);
   --bg-hsl: var(--stone-0-hsl);
+  --overlay: var(--stone-0);
   --text: var(--stone-12);
   --link: var(--indigo-7);
   --link-visited: var(--violet-7);
@@ -88,12 +89,13 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: var(--stone-11);
+    --overlay: var(--stone-10);
     --text: var(--stone-1);
     --link: var(--indigo-3);
     --link-visited: var(--indigo-3);
     --date-color: var(--stone-6);
     --muted-text: var(--stone-6);
-    --control-bgColor-hover: hsl(var(--stone-9-hsl) / 30%);
+    --control-bgColor-hover: hsl(var(--stone-9-hsl) / 40%);
   }
 
   ::selection {
@@ -224,7 +226,7 @@ select {
   /* top: anchor(center); */
   top: calc(anchor(bottom) + 8px);
   /* translate: 0 -50%; */
-  background: var(--bg);
+  background: var(--overlay);
   padding: 0.5rem;
   box-shadow: var(--shadow-4);
   border: 0;
@@ -368,6 +370,10 @@ header {
         transform: translate(-50%,-50%);
       }
     }
+
+    & ul {
+      gap: var(--social-links-gap);
+    }
   }
 
   &.desktop {
@@ -378,7 +384,7 @@ header {
   &.mobile {
     & ul {
       display: flex;
-      gap: var(--size-8);
+      gap: var(--social-links-gap);
       font-size: var(--body-fontSize);
     }
   }
