@@ -5,6 +5,10 @@ export interface PostType {
 
 export const POST_TYPES: PostType[] = [
   {
+    id: 'all',
+    label: 'All',
+  },
+  {
     id: 'visual-polish',
     label: 'Visual polish',
   },

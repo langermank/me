@@ -1,0 +1,71 @@
+---
+export interface Props {
+  showInProduction?: boolean;
+}
+
+const { showInProduction = false } = Astro.props;
+
+// Only show in development unless explicitly enabled for production
+const shouldShow = import.meta.env.DEV || showInProduction;
+---
+
+{shouldShow && (
+  <div id="tweakpane-container"></div>
+)}
+
+{shouldShow && (
+  <script>
+    // Initialize when DOM is loaded
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const { Pane } = await import('tweakpane');
+
+        const pane = new Pane({
+          title: 'Style tweaker',
+          expanded: true,
+        });
+
+        // Filter section toggle
+        const PARAMS = {
+          filterType: 'label-list'
+        };
+
+        pane.addBlade({
+          view: 'list',
+          label: 'Filter Style',
+          options: [
+            { text: 'Breadcrumb', value: 'breadcrumb' },
+            { text: 'Label List', value: 'label-list' }
+          ],
+          value: PARAMS.filterType,
+        }).on('change', (ev) => {
+          PARAMS.filterType = ev.value;
+          updateFilterSection(ev.value);
+        });
+
+        function updateFilterSection(filterType) {
+          const breadcrumbFilter = document.querySelector('.filter');
+          const labelListFilter = document.querySelector('.filter-label-list');
+
+          if (!breadcrumbFilter) return;
+
+          if (filterType === 'breadcrumb') {
+            // Show breadcrumb filter, hide label list
+            breadcrumbFilter.style.display = 'flex';
+            if (labelListFilter) {
+              labelListFilter.style.display = 'none';
+            }
+          } else if (filterType === 'label-list') {
+            // Hide breadcrumb filter, show label list
+            breadcrumbFilter.style.display = 'none';
+            if (labelListFilter) {
+              labelListFilter.style.display = 'flex';
+            }
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load Tweakpane:', error);
+      }
+    });
+  </script>
+)}

@@ -2,6 +2,7 @@
 import './styles/global.css';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
+// import TweakPane from './TweakPane.astro';
 
 export interface Props {
   title: string;
@@ -66,10 +67,13 @@ const finalTitle = getFinalTitle(title, siteType);
     {ogImage && <meta name="twitter:image" content={ogImage} />}
 
     <title>{finalTitle}</title>
+
+
   </head>
   <body>
     <Header currentPath={Astro.url.pathname} />
     <slot />
     <Footer />
+    <!-- <TweakPane /> -->
   </body>
 </html>

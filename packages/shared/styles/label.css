@@ -10,6 +10,8 @@
   --label-4-fgColor: var(--pink-10);
   --label-5-bgColor: hsl(var(--indigo-3-hsl) / var(--label-opacity));
   --label-5-fgColor: var(--indigo-10);
+  --label-6-bgColor: hsl(var(--violet-3-hsl) / var(--label-opacity));
+  --label-6-fgColor: var(--violet-10);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -25,6 +27,8 @@
     --label-4-fgColor: var(--pink-2);
     --label-5-bgColor: hsl(var(--indigo-9-hsl) / var(--label-opacity));
     --label-5-fgColor: var(--indigo-2);
+    --label-6-bgColor: hsl(var(--violet-9-hsl) / var(--label-opacity));
+    --label-6-fgColor: var(--violet-2);
   }
 }
 
@@ -37,29 +41,59 @@
   font-size: var(--label-fontSize);
   place-self: start;
   text-transform: lowercase;
+  text-decoration: none;;
 
   &[data-type='visual-polish'] {
     background: var(--label-1-bgColor);
     color: var(--label-1-fgColor);
+
+    &[aria-current] {
+      outline: solid 2px var(--label-1-fgColor);
+    }
   }
 
   &[data-type='component-api'] {
     background: var(--label-2-bgColor);
     color: var(--label-2-fgColor);
+
+    &[aria-current] {
+      outline: solid 2px var(--label-2-fgColor);
+    }
   }
 
   &[data-type='design-tokens'] {
     background: var(--label-3-bgColor);
     color: var(--label-3-fgColor);
+
+    &[aria-current] {
+      outline: solid 2px var(--label-3-fgColor);
+    }
   }
 
   &[data-type='article'] {
     background: var(--label-4-bgColor);
     color: var(--label-4-fgColor);
+
+    &[aria-current] {
+      outline: solid 2px var(--label-4-fgColor);
+    }
   }
 
   &[data-type='talk'] {
+    background: var(--label-6-bgColor);
+    color: var(--label-6-fgColor);
+
+    &[aria-current] {
+      outline: solid 2px var(--label-6-fgColor);
+    }
+  }
+
+  &[data-type='all'] {
     background: var(--label-5-bgColor);
     color: var(--label-5-fgColor);
+
+    &[aria-current] {
+      outline: solid 2px var(--label-5-fgColor);
+    }
   }
 }

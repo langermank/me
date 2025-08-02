@@ -2,6 +2,7 @@
 import Layout from '../../../../packages/shared/Layout.astro';
 import { getCollection } from 'astro:content';
 import PostCard from '../../../../packages/shared/PostCard.astro';
+import Label from '../../../../packages/shared/Label.astro';
 import { POST_TYPES, getPostTypeById } from '../../../../packages/shared/postTypes';
 
 const caseStudies = await getCollection('work');
@@ -30,19 +31,31 @@ const selectHtml = `<label for="type-filter" class="sr-only">Project type</label
 <Layout title="Katie Langerman" siteType="main">
   <main>
     <section class="intro">
-      <p>I'm a Staff Systems designer at GitHub, shipping code and nudging pixels for the Primer design system.</p>
+      <p>I'm a Staff Systems designer at GitHub, shipping code and nudging pixels for the <a href="https://primer.style/">Primer design system.</a></p>
       <p>I enjoy flexing into different domains. If there's something that needs doing, I'll do it.</p>
       <p>
-        I co-host an interface design podcast called Complementary, and off screen I'm teaching myself interior design
-        and slowly renovating my house.
+        I co-host an interface design podcast called <a href="https://creators.spotify.com/pod/show/complementary">Complementary</a>, and off screen I'm teaching myself interior design and slowly renovating my house.
       </p>
     </section>
 
     <section class="work">
-      <div class="filter">
+      <div class="filter" style="display: none;">
         <ol class="breadcrumb">
           <li>Work</li>
           <li><Fragment set:html={selectHtml} /></li>
+        </ol>
+      </div>
+      <div class="filter-label-list">
+        <ol class="label-list">
+          <li>Filter by:</li>
+          <li>
+            <Label type="all" href="#" />
+          </li>
+          {availableTypes.map((type) => (
+            <li>
+              <Label type={type.id} href="#" />
+            </li>
+          ))}
         </ol>
       </div>
 
@@ -74,17 +87,40 @@ const selectHtml = `<label for="type-filter" class="sr-only">Project type</label
       this.filter = document.getElementById('type-filter');
       this.selectLabel = document.getElementById('select-label');
       this.cards = Array.from(document.querySelectorAll('.card[data-type]'));
+      this.labelLinks = Array.from(document.querySelectorAll('.label-list a.label'));
 
       this.init();
     }
 
     init() {
-      if (!this.filter || !this.container) return;
+      if (!this.container) return;
 
-      this.filter.addEventListener('change', (e) => {
-        this.updateSelectLabel(e.target.value);
-        this.filterPosts(e.target.value);
+      // Original select filter
+      if (this.filter) {
+        this.filter.addEventListener('change', (e) => {
+          this.updateSelectLabel(e.target.value);
+          this.filterPosts(e.target.value);
+        });
+      }
+
+      // Label link filters
+      this.labelLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const selectedType = link.dataset.type;
+          this.updateLabelCurrent(link);
+          this.filterPosts(selectedType);
+        });
       });
+    }
+
+    updateLabelCurrent(activeLink) {
+      // Remove aria-current from all labels
+      this.labelLinks.forEach(link => {
+        link.removeAttribute('aria-current');
+      });
+      // Add aria-current to clicked label
+      activeLink.setAttribute('aria-current', 'page');
     }
 
     updateSelectLabel(selectedValue) {
@@ -147,16 +183,27 @@ const selectHtml = `<label for="type-filter" class="sr-only">Project type</label
 
     // Handle initial filter from URL
     const urlParams = new URLSearchParams(window.location.search);
-    const typeParam = urlParams.get('type');
+    const typeParam = urlParams.get('type') || 'all';
+
     if (typeParam) {
       const filterSelect = document.getElementById('type-filter');
       if (filterSelect) {
         filterSelect.value = typeParam;
         filterSelect.dispatchEvent(new Event('change'));
       }
+
+      // Set initial aria-current for label links
+      const activeLabel = document.querySelector(`.label-list a.label[data-type="${typeParam}"]`);
+      if (activeLabel) {
+        postFilter.updateLabelCurrent(activeLabel);
+      }
     } else {
-      // Update label for initial state
+      // Update label for initial state and set 'All' as current
       postFilter.updateSelectLabel('all');
+      const allLabel = document.querySelector('.label-list a.label[data-type="all"]');
+      if (allLabel) {
+        postFilter.updateLabelCurrent(allLabel);
+      }
     }
   });
 </script>

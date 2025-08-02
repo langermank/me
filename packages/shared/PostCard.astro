@@ -1,5 +1,6 @@
 ---
 import Label from './Label.astro';
+import { Image } from 'astro:assets';
 
 export interface Props {
   title: string;
@@ -15,6 +16,36 @@ export interface Props {
 
 const { title, date, thumbnail, description, hasMore, slug, linkPrefix = '', type, externalUrl } = Astro.props;
 
+// Import images dynamically based on filename
+let thumbnailImage: any;
+if (thumbnail && !thumbnail.startsWith('http')) {
+  try {
+    // Try multiple possible locations for images
+    const imagePaths = [
+      `../../sites/main-site/src/images/${thumbnail}`,
+      `../../sites/diy-site/src/images/${thumbnail}`,
+      `./images/${thumbnail}`
+    ];
+
+    // Use glob to find and import images from multiple locations
+    const allImages = {
+      ...import.meta.glob('../../sites/main-site/src/images/*.{jpeg,jpg,png,gif,webp,svg}', { eager: true }),
+      ...import.meta.glob('../../sites/diy-site/src/images/*.{jpeg,jpg,png,gif,webp,svg}', { eager: true }),
+      ...import.meta.glob('./images/*.{jpeg,jpg,png,gif,webp,svg}', { eager: true })
+    };
+
+    // Find the matching image
+    for (const imagePath of imagePaths) {
+      if (allImages[imagePath]) {
+        thumbnailImage = allImages[imagePath];
+        break;
+      }
+    }
+  } catch (error) {
+    console.warn(`Could not import image: ${thumbnail}`, error);
+  }
+}
+
 const formatDate = (date: Date) => {
   return new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
@@ -28,31 +59,42 @@ const postUrl = linkPrefix ? `${linkPrefix}/${slug}` : `/${slug}`;
 <article class="card" data-type={type}>
   <div class="card-title">
     <time datetime={date.toISOString()}>{formatDate(date)}</time>
-    <span aria-hidden="true" class="separator">·</span>
-    {
-      externalUrl ? (
-        <h3>
-          <a href={externalUrl} target="_blank" rel="noopener noreferrer" class="external-link">
-            {title}
-          </a>
-        </h3>
-      ) : hasMore ? (
-        <h3>
-          <a href={postUrl} class="read-more">
-            {title}
-          </a>
-        </h3>
-      ) : (
-        <h3>{title}</h3>
-      )
-    }
+    <!-- <span aria-hidden="true" class="separator">·</span> -->
+    <div class="label-container">
+      {type && <Label type={type} />}
+      {
+        externalUrl ? (
+          <h3>
+            <a href={externalUrl} target="_blank" rel="noopener noreferrer" class="external-link">
+              {title}
+            </a>
+          </h3>
+        ) : hasMore ? (
+          <h3>
+            <a href={postUrl} class="read-more">
+              {title}
+            </a>
+          </h3>
+        ) : (
+          <h3>{title}</h3>
+        )
+      }
+    </div>
   </div>
-  {type && <Label type={type} />}
   <p>{description}</p>
   {
     thumbnail && (
       <div class="thumbnail">
-        <img src={thumbnail} alt={title} />
+        {thumbnailImage ? (
+          <Image
+            src={thumbnailImage.default || thumbnailImage}
+            alt={title}
+            loading="lazy"
+            format="webp"
+          />
+        ) : (
+          <img src={thumbnail} alt={title} loading="lazy" />
+        )}
       </div>
     )
   }

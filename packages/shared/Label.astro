@@ -4,15 +4,24 @@ import './styles/label.css';
 
 export interface Props {
   type: string;
+  href?: string;
+  size?: 'small' | 'medium';
+  variant?: 'default' | 'outline' | 'subtle';
 }
 
-const { type } = Astro.props;
+const { type, href, size = 'medium', variant = 'default' } = Astro.props;
 
 const postType = getPostType(type);
 const displayLabel = postType?.label || type;
 const typeId = postType?.id || type;
 ---
 
-<span class="label" data-type={typeId}>
-  {displayLabel}
-</span>
+{href ? (
+  <a href={href} class={`label label--${size} label--${variant} label--${typeId}`} data-type={typeId}>
+    {displayLabel}
+  </a>
+) : (
+  <span class={`label label--${size} label--${variant} label--${typeId}`} data-type={typeId}>
+    {displayLabel}
+  </span>
+)}
