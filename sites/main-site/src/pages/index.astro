@@ -3,7 +3,7 @@ import Layout from '../../../../packages/shared/Layout.astro';
 import { getCollection } from 'astro:content';
 import PostCard from '../../../../packages/shared/PostCard.astro';
 import Label from '../../../../packages/shared/Label.astro';
-import { POST_TYPES, getPostTypeById } from '../../../../packages/shared/postTypes';
+import { getPostTypeById } from '../../../../packages/shared/postTypes';
 
 const caseStudies = await getCollection('work');
 const sortedCaseStudies = caseStudies.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
@@ -14,18 +14,6 @@ const availableTypes = uniqueTypeIds
   .map((id) => getPostTypeById(id))
   .filter(Boolean)
   .sort((a, b) => a.label.localeCompare(b.label));
-
-// Generate entire select HTML for use in Fragment
-const optionsHtml = availableTypes
-  .map((type) => {
-    // const count = caseStudies.filter((study) => study.data.type === type.id).length;
-    return `<option value="${type.id}">${type.label}</option>`;
-  })
-  .join('');
-
-//<span aria-hidden="true" class="option-label">Type:</span>
-
-const selectHtml = `<label for="type-filter" class="sr-only">Project type</label><select id="type-filter" class="type-filter"><button><span class="select-control"><selectedcontent></selectedcontent></span><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M181.66,170.34a8,8,0,0,1,0,11.32l-48,48a8,8,0,0,1-11.32,0l-48-48a8,8,0,0,1,11.32-11.32L128,212.69l42.34-42.35A8,8,0,0,1,181.66,170.34Zm-96-84.68L128,43.31l42.34,42.35a8,8,0,0,0,11.32-11.32l-48-48a8,8,0,0,0-11.32,0l-48,48A8,8,0,0,0,85.66,85.66Z"></path></svg></button><option value="all">All</option>${optionsHtml}</select>`;
 ---
 
 <Layout title="Katie Langerman" siteType="main">
@@ -39,15 +27,9 @@ const selectHtml = `<label for="type-filter" class="sr-only">Project type</label
     </section>
 
     <section class="work">
-      <div class="filter" style="display: none;">
-        <ol class="breadcrumb">
-          <li>Work</li>
-          <li><Fragment set:html={selectHtml} /></li>
-        </ol>
-      </div>
       <div class="filter-label-list">
         <ol class="label-list">
-          <li>Filter by:</li>
+          <!-- <li>Filter by:</li> -->
           <li>
             <Label type="all" href="#" />
           </li>
@@ -84,8 +66,6 @@ const selectHtml = `<label for="type-filter" class="sr-only">Project type</label
   class PostFilter {
     constructor() {
       this.container = document.getElementById('post-container');
-      this.filter = document.getElementById('type-filter');
-      this.selectLabel = document.getElementById('select-label');
       this.cards = Array.from(document.querySelectorAll('.card[data-type]'));
       this.labelLinks = Array.from(document.querySelectorAll('.label-list a.label'));
 
@@ -95,26 +75,42 @@ const selectHtml = `<label for="type-filter" class="sr-only">Project type</label
     init() {
       if (!this.container) return;
 
-      // Original select filter
-      if (this.filter) {
-        this.filter.addEventListener('change', (e) => {
-          this.updateSelectLabel(e.target.value);
-          this.filterPosts(e.target.value);
-        });
-      }
+      // Set unique view transition names for each card
+      let cardIndex = 0;
+      this.cards.forEach((card) => {
+        card.style.viewTransitionName = `post-${++cardIndex}`;
+      });
 
       // Label link filters
       this.labelLinks.forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
           const selectedType = link.dataset.type;
-          this.updateLabelCurrent(link);
-          this.filterPosts(selectedType);
+          this.handleFilterChange(selectedType, () => {
+            this.updateActiveLabel(link);
+          });
         });
       });
     }
 
-    updateLabelCurrent(activeLink) {
+    handleFilterChange(selectedType, updateUI) {
+      // Check if View Transitions API is supported
+      if (!document.startViewTransition) {
+        updateUI();
+        this.filterPosts(selectedType);
+        this.updateURL(selectedType);
+        return;
+      }
+
+      // Use View Transitions API
+      document.startViewTransition(() => {
+        updateUI();
+        this.filterPosts(selectedType);
+        this.updateURL(selectedType);
+      });
+    }
+
+    updateActiveLabel(activeLink) {
       // Remove aria-current from all labels
       this.labelLinks.forEach(link => {
         link.removeAttribute('aria-current');
@@ -123,50 +119,20 @@ const selectHtml = `<label for="type-filter" class="sr-only">Project type</label
       activeLink.setAttribute('aria-current', 'page');
     }
 
-    updateSelectLabel(selectedValue) {
-      if (!this.selectLabel) return;
+    filterPosts(selectedType) {
+      this.cards.forEach((card) => {
+        const cardType = card.getAttribute('data-type');
 
-      const selectedOption = this.filter.options[this.filter.selectedIndex];
-      const displayText = selectedOption.textContent.trim();
-      this.selectLabel.textContent = `Type: ${displayText}`;
+        // Check if card matches filter
+        if (selectedType === 'all' || selectedType === cardType) {
+          card.removeAttribute('hidden');
+        } else {
+          card.setAttribute('hidden', '');
+        }
+      });
     }
 
-    async filterPosts(selectedType) {
-      const visibleCards =
-        selectedType === 'all' ? this.cards : this.cards.filter((card) => card.dataset.type === selectedType);
-
-      const hiddenCards = this.cards.filter((card) => !visibleCards.includes(card));
-
-      // Animate out hidden cards
-      hiddenCards.forEach((card) => {
-        card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(-10px)';
-      });
-
-      // Wait for animation to complete
-      await new Promise((resolve) => setTimeout(resolve, 300));
-
-      // Hide cards and update layout
-      hiddenCards.forEach((card) => {
-        card.style.display = 'none';
-      });
-
-      // Show visible cards with animation
-      visibleCards.forEach((card, index) => {
-        card.style.display = 'flex';
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(10px)';
-
-        // Stagger the animations
-        setTimeout(() => {
-          card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, index * 100);
-      });
-
-      // Update URL without page reload for better UX
+    updateURL(selectedType) {
       const url = new URL(window.location.href);
       if (selectedType === 'all') {
         url.searchParams.delete('type');
@@ -185,25 +151,13 @@ const selectHtml = `<label for="type-filter" class="sr-only">Project type</label
     const urlParams = new URLSearchParams(window.location.search);
     const typeParam = urlParams.get('type') || 'all';
 
-    if (typeParam) {
-      const filterSelect = document.getElementById('type-filter');
-      if (filterSelect) {
-        filterSelect.value = typeParam;
-        filterSelect.dispatchEvent(new Event('change'));
-      }
-
-      // Set initial aria-current for label links
-      const activeLabel = document.querySelector(`.label-list a.label[data-type="${typeParam}"]`);
-      if (activeLabel) {
-        postFilter.updateLabelCurrent(activeLabel);
-      }
-    } else {
-      // Update label for initial state and set 'All' as current
-      postFilter.updateSelectLabel('all');
-      const allLabel = document.querySelector('.label-list a.label[data-type="all"]');
-      if (allLabel) {
-        postFilter.updateLabelCurrent(allLabel);
-      }
+    // Set initial aria-current for label links AND filter the posts
+    const activeLabel = document.querySelector(`.label-list a.label[data-type="${typeParam}"]`);
+    if (activeLabel) {
+      postFilter.updateActiveLabel(activeLabel);
     }
+
+    // Always filter the posts based on the URL parameter (even if activeLabel is null)
+    postFilter.filterPosts(typeParam);
   });
 </script>
