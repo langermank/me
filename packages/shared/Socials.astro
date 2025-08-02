@@ -14,4 +14,98 @@
   <li>
     <a href="mailto:hello@katielangerman.com" class="social-link">Email</a>
   </li>
+  <li class="theme-toggle-item">
+    <button type="button" class="theme-toggle" aria-label="Toggle theme">
+      <svg xmlns="http://www.w3.org/2000/svg" class="sun-icon" focusable="false" aria-hidden="true" width="32" height="32" fill="#000000" viewBox="0 0 256 256"><path d="M120,40V32a8,8,0,0,1,16,0v8a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-8-8A8,8,0,0,0,50.34,61.66Zm0,116.68-8,8a8,8,0,0,0,11.32,11.32l8-8a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l8-8a8,8,0,0,0-11.32-11.32l-8,8A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l8,8a8,8,0,0,0,11.32-11.32ZM40,120H32a8,8,0,0,0,0,16h8a8,8,0,0,0,0-16Zm88,88a8,8,0,0,0-8,8v8a8,8,0,0,0,16,0v-8A8,8,0,0,0,128,208Zm96-88h-8a8,8,0,0,0,0,16h8a8,8,0,0,0,0-16Z"></path></svg>
+
+      <svg xmlns="http://www.w3.org/2000/svg" style="display: none;" aria-hidden="true" focusable="false" class="icon moon-icon"  viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/><line x1="208" y1="120" x2="208" y2="72" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="232" y1="96" x2="184" y2="96" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="160" y1="32" x2="160" y2="64" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><line x1="176" y1="48" x2="144" y2="48" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M210.69,158.18A96.78,96.78,0,0,1,192,160,96.08,96.08,0,0,1,97.82,45.31,88,88,0,1,0,210.69,158.18Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>
+
+      <span class="theme-label sr-only">Switch to dark theme</span>
+    </button>
+  </li>
 </ul>
+
+<script>
+  class ThemeToggle {
+    static instance = null;
+    static isInitialized = false;
+
+    constructor() {
+      // Singleton pattern - only create one instance
+      if (ThemeToggle.instance) {
+        return ThemeToggle.instance;
+      }
+
+      this.html = document.documentElement;
+      this.toggles = [];
+
+      ThemeToggle.instance = this;
+      this.init();
+    }
+
+    init() {
+      if (ThemeToggle.isInitialized) return;
+      ThemeToggle.isInitialized = true;
+
+      // Find all theme toggle buttons
+      this.toggles = Array.from(document.querySelectorAll('.theme-toggle'));
+
+      if (this.toggles.length === 0) return;
+
+      // Check for saved theme preference or default to 'light'
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      this.setTheme(savedTheme);
+
+      // Add click listeners to all toggle buttons
+      this.toggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+          this.toggleTheme();
+        });
+      });
+
+      // Listen for system theme changes
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      mediaQuery.addEventListener('change', (e) => {
+        // Only auto-switch if no manual preference is saved
+        if (!localStorage.getItem('theme')) {
+          this.setTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+    }
+
+    setTheme(theme) {
+      this.html.classList.remove('light-theme', 'dark-theme');
+      this.html.classList.add(`${theme}-theme`);
+
+      // Update all toggle buttons
+      this.toggles.forEach(toggle => {
+        const sunIcon = toggle.querySelector('.sun-icon');
+        const moonIcon = toggle.querySelector('.moon-icon');
+        const label = toggle.querySelector('.theme-label');
+
+        if (theme === 'dark') {
+          if (sunIcon) sunIcon.style.display = 'block';
+          if (moonIcon) moonIcon.style.display = 'none';
+          if (label) label.textContent = 'Switch to light theme';
+        } else {
+          if (sunIcon) sunIcon.style.display = 'none';
+          if (moonIcon) moonIcon.style.display = 'block';
+          if (label) label.textContent = 'Switch to dark theme';
+        }
+      });
+    }
+
+    toggleTheme() {
+      const currentTheme = this.html.classList.contains('dark-theme') ? 'dark' : 'light';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+      this.setTheme(newTheme);
+      localStorage.setItem('theme', newTheme);
+    }
+  }
+
+  // Initialize theme toggle when DOM is loaded
+  document.addEventListener('DOMContentLoaded', () => {
+    new ThemeToggle();
+  });
+</script>

@@ -20,14 +20,18 @@ const isOnDiySite = isDiyDomain; // DIY site is "not work"
 ---
 
 <header>
-  <picture class="headshot">
-    <source media="(prefers-color-scheme: dark)" srcset={darkHeadshot.src} />
-    <source media="(prefers-color-scheme: light)" srcset={lightHeadshot.src} />
+  <div class="headshot">
+    <Image
+      src={lightHeadshot}
+      alt="Katie Langerman"
+      class="headshot-light"
+    />
     <Image
       src={darkHeadshot}
       alt="Katie Langerman"
+      class="headshot-dark"
     />
-  </picture>
+  </div>
   <h1 class="site-title">Katie Langerman</h1>
   <nav class="site-nav mobile">
     <ul>

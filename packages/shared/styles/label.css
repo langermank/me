@@ -14,22 +14,20 @@
   --label-6-fgColor: var(--violet-10);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --label-opacity: 50%;
-    --label-1-bgColor: hsl(var(--purple-9-hsl) / var(--label-opacity));
-    --label-1-fgColor: var(--purple-2);
-    --label-2-bgColor: hsl(var(--camo-9-hsl) / var(--label-opacity));
-    --label-2-fgColor: var(--camo-2);
-    --label-3-bgColor: hsl(var(--cyan-9-hsl) / var(--label-opacity));
-    --label-3-fgColor: var(--cyan-2);
-    --label-4-bgColor: hsl(var(--pink-9-hsl) / var(--label-opacity));
-    --label-4-fgColor: var(--pink-2);
-    --label-5-bgColor: hsl(var(--indigo-9-hsl) / var(--label-opacity));
-    --label-5-fgColor: var(--indigo-2);
-    --label-6-bgColor: hsl(var(--violet-9-hsl) / var(--label-opacity));
-    --label-6-fgColor: var(--violet-2);
-  }
+.dark-theme {
+  --label-opacity: 50%;
+  --label-1-bgColor: hsl(var(--purple-9-hsl) / var(--label-opacity));
+  --label-1-fgColor: var(--purple-2);
+  --label-2-bgColor: hsl(var(--camo-9-hsl) / var(--label-opacity));
+  --label-2-fgColor: var(--camo-2);
+  --label-3-bgColor: hsl(var(--cyan-9-hsl) / var(--label-opacity));
+  --label-3-fgColor: var(--cyan-2);
+  --label-4-bgColor: hsl(var(--pink-9-hsl) / var(--label-opacity));
+  --label-4-fgColor: var(--pink-2);
+  --label-5-bgColor: hsl(var(--indigo-9-hsl) / var(--label-opacity));
+  --label-5-fgColor: var(--indigo-2);
+  --label-6-bgColor: hsl(var(--violet-9-hsl) / var(--label-opacity));
+  --label-6-fgColor: var(--violet-2);
 }
 
 .label {
