@@ -18,18 +18,18 @@ const getDefaultDescription = (type?: string) => {
   if (type === 'diy') {
     return "Katie Langerman's DIY corner - tutorials, code experiments, and creative projects.";
   }
-  return 'Katie Langerman - Systems Designer based in San Diego, working on design systems at GitHub.';
+  return 'Systems Designer';
 };
 
 // Dynamic title formatting
 const getFinalTitle = (title: string, type?: string) => {
   if (type === 'diy' && title === 'DIY') {
-    return 'DIY | Katie Langerman';
+    return 'Katie Langerman';
   }
-  if (title === 'Katie Langerman | Systems Designer') {
+  if (title === 'Katie Langerman') {
     return title;
   }
-  return `${title} | Katie Langerman`;
+  return `${title}`;
 };
 
 const finalDescription = description || getDefaultDescription(siteType);
@@ -43,12 +43,6 @@ const finalTitle = getFinalTitle(title, siteType);
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={finalDescription} />
     <meta name="generator" content={Astro.generator} />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inria+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Inria+Serif:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Unna:ital,wght@0,400;0,700;1,400;1,700&display=swap"
-      rel="stylesheet"
-    />
 
     <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/kfavicon.png" />

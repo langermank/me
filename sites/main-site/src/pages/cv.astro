@@ -1,49 +1,106 @@
 ---
 import Layout from '../../../../packages/shared/Layout.astro';
+import '../styles/cv.css';
 ---
 
 <Layout title="Katie Langerman's resume" siteType="main">
   <div class="cv">
     <section>
       <h2>Employment</h2>
-      <aside class="employer">GitHub</aside>
-      <section>
-        <h2>Staff Systems Designer / 2022 – Present</h2>
-        <h2>Senior Systems Designer / 2021 – 2022</h2>
-        <h3>Highlights & ships</h3>
-        <ul>
-          <li>Leads cross-framework improvements to Primer, GitHub’s design system, with a focus on design token infrastructure</li>
-          <li>Collaborates with engineers to develop robust component APIs, ensuring alignment between technical requirements and design intent.</li>
-          <li>Advocates for accessibility and inclusive design, helping ensure that components meet industry standards.</li>
-          <li>Supports adoption and governance through documentation, office hours, and cross-team collaboration.</li>
-        </ul>
-      </section>
+      <div class="job-wrap">
+        <aside class="employer">GitHub</aside>
+        <section class="job-details">
+          <div class="roles">
+            <h3>Staff Systems Designer • <span class="light">2022 – Present</span></h3>
+            <h3>Senior Systems Designer • <span class="light">2021 – 2022</span></h3>
+          </div>
+          <div class="highlights">
+            <h4>Highlights</h4>
+            <p>My reach at GitHub is broad as a systems designer. I work on Primer owned components and patterns, but I also touch a lot of production code to help keep the lights on or improve things as needed. I would rather open a PR and fix something myself than file an issue.</p>
+             <ul>
+              <li>Elevated Primer's design token system to be framework agnostic, supporting everything from Rails to React.</li>
+              <li>Influenced CSS authoring styles through documentation and tooling.</li>
+              <li>Helped foster a collaborate environment where designers feel welcome reviewing a Pull Request.</li>
+            </ul>
+          </div>
+          <div class="highlights">
+            <h4>Ships</h4>
+            <ul>
+              <li><a href="https://github.blog/changelog/2025-06-05-control-contrast-for-all-github-themes/">Contrast settings for all themes</a></li>
+              <li><a href="https://github.blog/changelog/2024-08-15-high-contrast-theme-improvements/">High contrast theme improvements</a></li>
+              <li><a href="https://github.blog/changelog/2022-04-27-improved-focus-indicators-for-keyboard-navigation/">Global focus styles</a></li>
+            </ul>
+          </div>
+        </section>
+      </div>
 
-      <aside class="employer">CarGurus</aside>
-      <section>
-        <h2>Principal UI/UX Engineer / 2021</h2>
-        <h2>Senior UI/UX Engineer / 2019 – 2021</h2>
-        <h2>UI Engineer / 2017 – 2019</h2>
-        <h3>Highlights & ships</h3>
-        <ul>
-          <li>Leads cross-framework improvements to Primer, GitHub’s design system, with a focus on design token infrastructure</li>
-        </ul>
-      </section>
+      <div class="job-wrap">
+        <aside class="employer">CarGurus</aside>
+        <section class="job-details">
+          <div class="roles">
+            <h3>Principal UI/UX Engineer • <span class="light">2021</span></h3>
+            <h3>Senior UI/UX Engineer • <span class="light">2019 – 2021</span></h3>
+            <h3>UI Engineer • <span class="light">2017 – 2019</span></h3>
+          </div>
+          <div class="highlights">
+            <h4>Highlights & ships</h4>
+            <p>Created CarGuru's design system called Concrete to help support a React migration and newer design/product org. Before working on Concrete, I introduced new branding in the form of a style guide which influenced new component patterns and the overall visual design language.</p>
+          </div>
+        </section>
+      </div>
 
-      <aside class="employer">StudentUniverse</aside>
-      <section>
-        <h2>Front-End Developer / 2015 – 2017</h2>
-        <h3>Highlights</h3>
-        <p>Designed and implemented key features for the StudentUniverse.com web app using HTML, CSS, and Angular.</p>
-      </section>
+      <div class="job-wrap">
+        <aside class="employer">StudentUniverse</aside>
+        <section class="job-details">
+          <div class="roles">
+            <h3>Front-End Developer • <span class="light">2015 – 2017</span></h3>
+          </div>
+          <div class="highlights">
+            <h4>Highlights</h4>
+            <p>Designed and implemented key features for the StudentUniverse.com web app using HTML, CSS, and Angular.</p>
+          </div>
+        </section>
+      </div>
     </section>
 
     <section>
       <h2>Community</h2>
+      <div class="job-wrap">
+        <aside class="employer">Complementary podcast</aside>
+        <section class="job-details">
+          <div class="roles">
+            <h3>Co-host • <span class="light">2023 – Present</span></h3>
+          </div>
+          <div class="highlights">
+            <p>Co-host a bi-weekly interface design podcast with <a href="https://anthonyhobday.com/">Anthony Hobday.</a></p>
+          </div>
+        </section>
+      </div>
+
+      <div class="job-wrap">
+        <aside class="employer">Ladies that UX Boston</aside>
+        <section class="job-details">
+          <div class="roles">
+            <h3>Boston chapter co-organizer • <span class="light">2018 – 2024</span></h3>
+          </div>
+          <div class="highlights">
+            <p>Co-led the Boston chapter of Ladies that UX planning a design conference in 2018 with ~300 attendees, followed by monthly in person events.</p>
+          </div>
+        </section>
+      </div>
     </section>
 
     <section>
       <h2>Education</h2>
+      <div class="job-wrap">
+        <aside class="employer">Simmons College</aside>
+        <section class="job-details">
+          <div class="roles">
+            <h3>BA in Fine Arts, Graphic Design • <span class="light">2010 – 2014</span></h3>
+          </div>
+        </section>
+      </div>
+    </section>
     </section>
   </div>
 </Layout>

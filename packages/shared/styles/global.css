@@ -5,10 +5,6 @@
 @import 'open-props/easings';
 @import 'open-props/shadows';
 
-.tp-dfwv {
-    z-index: 3;
-  }
-
 @property --header-height {
   syntax: '<length>';
   inherits: true;
@@ -407,6 +403,7 @@ header {
     display: flex;
     gap: var(--card-label-gap);
     align-items: center;
+    flex-wrap: wrap;
   }
 
   & .card-title {
