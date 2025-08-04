@@ -76,3 +76,11 @@ const isCvPage = currentPath === '/cv' || currentPath.endsWith('/cv');
   </ul>
   <Socials />
 </nav>
+
+<script>
+  console.log('Header Debug Info:', {
+    pathname: window.location.pathname,
+    currentPath: window.location.pathname.replace(/\/$/, '') || '/',
+    isCvPage: window.location.pathname.replace(/\/$/, '') === '/cv' || window.location.pathname.endsWith('/cv')
+  });
+</script>
