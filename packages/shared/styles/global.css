@@ -279,7 +279,7 @@ header {
   &.mobile {
     & ul {
       display: flex;
-      gap: var(--social-links-gap);
+      gap: 1.5rem;
       font-size: var(--body-fontSize);
     }
   }
@@ -389,6 +389,7 @@ header {
   & .label-container {
     display: flex;
     gap: var(--card-label-gap);
+    align-items: center;
   }
 
   & .card-title {
