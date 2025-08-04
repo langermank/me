@@ -10,6 +10,7 @@ const caseStudies = defineCollection({
     hasMore: z.boolean().default(false),
     type: z.string(),
     externalUrl: z.string().optional(),
+    hasDarkImage: z.boolean().default(false),
   }),
 });
 

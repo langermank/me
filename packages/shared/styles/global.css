@@ -305,13 +305,30 @@ header {
   }
 }
 
-.dark-theme .headshot {
-  .headshot-light {
-    display: none;
+.thumbnail-dark {
+  display: none;
+}
+
+.dark-theme {
+
+  & .headshot {
+    & .headshot-light {
+      display: none;
+    }
+
+    & .headshot-dark {
+      display: block;
+    }
   }
 
-  .headshot-dark {
-    display: block;
+  & .thumbnail {
+    & .thumbnail-light {
+      display: none;
+    }
+
+    & .thumbnail-dark {
+      display: block;
+    }
   }
 }
 

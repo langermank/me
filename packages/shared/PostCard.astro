@@ -12,12 +12,15 @@ export interface Props {
   linkPrefix?: string; // Allow customizable link prefix (e.g., '/work' or '/diy')
   type?: string; // Optional type for filtering
   externalUrl?: string; // Optional external URL for the title
+  hasDarkImage?: boolean; // Whether the image has a dark variant
 }
 
-const { title, date, thumbnail, description, hasMore, slug, linkPrefix = '', type, externalUrl } = Astro.props;
+const { title, date, thumbnail, description, hasMore, slug, linkPrefix = '', type, externalUrl, hasDarkImage } = Astro.props;
 
 // Import images dynamically based on filename
 let thumbnailImage: any;
+let darkThumbnailImage: any;
+
 if (thumbnail && !thumbnail.startsWith('http')) {
   try {
     // Try multiple possible locations for images
@@ -34,11 +37,31 @@ if (thumbnail && !thumbnail.startsWith('http')) {
       ...import.meta.glob('./images/*.{jpeg,jpg,png,gif,webp,svg}', { eager: true })
     };
 
-    // Find the matching image
+    // Find the matching light image
     for (const imagePath of imagePaths) {
       if (allImages[imagePath]) {
         thumbnailImage = allImages[imagePath];
         break;
+      }
+    }
+
+    // If hasDarkImage is true, also look for the dark variant
+    if (hasDarkImage && thumbnail) {
+      const fileExtension = thumbnail.split('.').pop();
+      const fileName = thumbnail.replace(`.${fileExtension}`, '');
+      const darkFileName = `${fileName}-dark.${fileExtension}`;
+
+      const darkImagePaths = [
+        `../../sites/main-site/src/images/${darkFileName}`,
+        `../../sites/diy-site/src/images/${darkFileName}`,
+        `./images/${darkFileName}`
+      ];
+
+      for (const darkImagePath of darkImagePaths) {
+        if (allImages[darkImagePath]) {
+          darkThumbnailImage = allImages[darkImagePath];
+          break;
+        }
       }
     }
   } catch (error) {
@@ -86,12 +109,31 @@ const postUrl = linkPrefix ? `${linkPrefix}/${slug}` : `/${slug}`;
     thumbnail && (
       <div class="thumbnail">
         {thumbnailImage ? (
-          <Image
-            src={thumbnailImage.default || thumbnailImage}
-            alt={title}
-            loading="lazy"
-            format="webp"
-          />
+          hasDarkImage && darkThumbnailImage ? (
+            <div class="thumbnail-container">
+              <Image
+                src={thumbnailImage.default || thumbnailImage}
+                alt={title}
+                loading="lazy"
+                format="webp"
+                class="thumbnail-light"
+              />
+              <Image
+                src={darkThumbnailImage.default || darkThumbnailImage}
+                alt={title}
+                loading="lazy"
+                format="webp"
+                class="thumbnail-dark"
+              />
+            </div>
+          ) : (
+            <Image
+              src={thumbnailImage.default || thumbnailImage}
+              alt={title}
+              loading="lazy"
+              format="webp"
+            />
+          )
         ) : (
           <img src={thumbnail} alt={title} loading="lazy" />
         )}
