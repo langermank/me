@@ -17,6 +17,11 @@ const notWorkUrl = isDiyDomain ? '/' : diySiteUrl;
 // Determine current page for aria-current
 const isOnWorkSite = !isDiyDomain; // Main site is "work"
 const isOnDiySite = isDiyDomain; // DIY site is "not work"
+
+// More robust path matching for production
+const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/'; // Remove trailing slash, except for root
+const isHomePage = currentPath === '/';
+const isCvPage = currentPath === '/cv' || currentPath.endsWith('/cv');
 ---
 
 <header>
@@ -36,13 +41,13 @@ const isOnDiySite = isDiyDomain; // DIY site is "not work"
   <nav class="site-nav mobile">
     <ul>
       <li>
-      <a href={workUrl} aria-current={isOnWorkSite && Astro.url.pathname === '/' ? 'page' : undefined}>
+      <a href={workUrl} aria-current={isOnWorkSite && isHomePage ? 'page' : undefined}>
         Work
       </a>
     </li>
       {isOnWorkSite && (
         <li>
-          <a href="/cv" aria-current={Astro.url.pathname === '/cv' ? 'page' : undefined}>CV</a>
+          <a href="/cv" aria-current={isCvPage ? 'page' : undefined}>CV</a>
         </li>
       )}
 
@@ -56,13 +61,13 @@ const isOnDiySite = isDiyDomain; // DIY site is "not work"
 <nav class="site-nav desktop">
   <ul>
     <li>
-      <a href={workUrl} aria-current={isOnWorkSite && Astro.url.pathname === '/' ? 'page' : undefined}>
+      <a href={workUrl} aria-current={isOnWorkSite && isHomePage ? 'page' : undefined}>
         Work
       </a>
     </li>
     {isOnWorkSite && (
       <li>
-        <a href="/cv" aria-current={Astro.url.pathname === '/cv' ? 'page' : undefined}>CV</a>
+        <a href="/cv" aria-current={isCvPage ? 'page' : undefined}>CV</a>
       </li>
     )}
     <!-- <li>
