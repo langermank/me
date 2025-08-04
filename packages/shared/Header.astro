@@ -36,11 +36,19 @@ const isOnDiySite = isDiyDomain; // DIY site is "not work"
   <nav class="site-nav mobile">
     <ul>
       <li>
-        <a href={workUrl} aria-current={isOnWorkSite ? 'page' : undefined}>Work</a>
-      </li>
-      <li>
+      <a href={workUrl} aria-current={isOnWorkSite && Astro.url.pathname === '/' ? 'page' : undefined}>
+        Work
+      </a>
+    </li>
+      {isOnWorkSite && (
+        <li>
+          <a href="/cv" aria-current={Astro.url.pathname === '/cv' ? 'page' : undefined}>CV</a>
+        </li>
+      )}
+
+      <!-- <li>
         <a href={notWorkUrl} aria-current={isOnDiySite ? 'page' : undefined}>Not work</a>
-      </li>
+      </li> -->
     </ul>
   </nav>
 </header>
@@ -48,11 +56,18 @@ const isOnDiySite = isDiyDomain; // DIY site is "not work"
 <nav class="site-nav desktop">
   <ul>
     <li>
-      <a href={workUrl} aria-current={isOnWorkSite ? 'page' : undefined}>Work</a>
+      <a href={workUrl} aria-current={isOnWorkSite && Astro.url.pathname === '/' ? 'page' : undefined}>
+        Work
+      </a>
     </li>
-    <li>
+    {isOnWorkSite && (
+      <li>
+        <a href="/cv" aria-current={Astro.url.pathname === '/cv' ? 'page' : undefined}>CV</a>
+      </li>
+    )}
+    <!-- <li>
       <a href={notWorkUrl} aria-current={isOnDiySite ? 'page' : undefined}>Not work</a>
-    </li>
+    </li> -->
   </ul>
   <Socials />
 </nav>

@@ -7,7 +7,7 @@ const diyPosts = await getCollection('diy');
 const sortedPosts = diyPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
 
-<Layout title="Katie Langerman" description="Katie learns to renovate her home" siteType="diy">
+<Layout title="Katie Langerman" siteType="diy">
   <main>
     <section class="intro">
       <p>This is going to say something nice someday.</p>
@@ -24,7 +24,7 @@ const sortedPosts = diyPosts.sort((a, b) => b.data.date.getTime() - a.data.date.
                 title={post.data.title}
                 date={post.data.date}
                 thumbnail={post.data.thumbnail}
-                description={post.data.description || post.data.title}
+                description={post.data.description}
                 hasMore={true}
                 slug={post.slug}
               />
