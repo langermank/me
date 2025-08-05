@@ -20,6 +20,7 @@
 
   display: grid;
   gap: 32px;
+  max-inline-size: var(--max-inline-size);
 
   aside {
     color: var(--muted-text);
@@ -32,6 +33,10 @@
 
   ul {
     padding-inline-start: 16px;
+  }
+
+  p, li {
+    max-inline-size: var(--max-inline-size);
   }
 }
 
