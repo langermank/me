@@ -1,0 +1,34 @@
+{
+  "kind": "collectionType",
+  "collectionName": "diy_posts",
+  "info": {
+    "singularName": "diy-post",
+    "pluralName": "diy-posts",
+    "displayName": "DIY post"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "date": {
+      "type": "date"
+    },
+    "thumbnail": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "content": {
+      "type": "richtext"
+    }
+  }
+}

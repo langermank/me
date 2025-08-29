@@ -2,7 +2,9 @@
 import Layout from '../../../../packages/shared/Layout.astro';
 import { getCollection } from 'astro:content';
 import PostCard from '../../../../packages/shared/PostCard.astro';
-
+import { fetchDiyPosts } from '../../../../packages/shared/strapi.js';
+const posts = await fetchDiyPosts();
+console.log('DIY Posts with thumbnails:', posts.map(p => ({ title: p.title, thumbnail: p.thumbnail })));
 const diyPosts = await getCollection('diy');
 const sortedPosts = diyPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
 ---
@@ -14,6 +16,20 @@ const sortedPosts = diyPosts.sort((a, b) => b.data.date.getTime() - a.data.date.
     </section>
 
     <section class="diy-posts">
+      {posts.map((post) => (
+          <PostCard
+            title={post.title}
+            date={new Date(post.date)}
+            thumbnail={post.thumbnail}
+            description={post.description}
+            hasMore={post.hasMore}
+            slug={post.slug}
+            linkPrefix="/work"
+            type={post.type}
+            externalUrl={post.externalUrl}
+            hasDarkImage={post.hasDarkImage}
+          />
+        ))}
       {
         sortedPosts.length === 0 ? (
           <p class="no-posts">No DIY posts yet. Check back soon!</p>

@@ -12,16 +12,20 @@ export interface Props {
   linkPrefix?: string; // Allow customizable link prefix (e.g., '/work' or '/diy')
   type?: string; // Optional type for filtering
   externalUrl?: string; // Optional external URL for the title
-  hasDarkImage?: boolean; // Whether the image has a dark variant
+  hasDarkImage?: boolean; // Whether the image has a dark variant (for MDX compatibility)
+  darkThumbnail?: any; // Dark thumbnail image upload from Strapi
 }
 
-const { title, date, thumbnail, description, hasMore, slug, linkPrefix = '', type, externalUrl, hasDarkImage } = Astro.props;
+const { title, date, thumbnail, description, hasMore, slug, linkPrefix = '', type, externalUrl, hasDarkImage, darkThumbnail } = Astro.props;
+
+// Handle type - could be a string (from MDX) or an object (from Strapi relation)
+const typeValue = typeof type === 'string' ? type : type?.name || type?.displayName;
 
 // Import images dynamically based on filename
 let thumbnailImage: any;
 let darkThumbnailImage: any;
 
-if (thumbnail && !thumbnail.startsWith('http')) {
+if (thumbnail && typeof thumbnail === 'string' && !thumbnail.startsWith('http')) {
   try {
     // Try multiple possible locations for images
     const imagePaths = [
@@ -79,12 +83,12 @@ const formatDate = (date: Date) => {
 const postUrl = linkPrefix ? `${linkPrefix}/${slug}` : `/${slug}`;
 ---
 
-<article class="card" data-type={type}>
+<article class="card" data-type={typeValue}>
   <div class="card-title">
     <time datetime={date.toISOString()}>{formatDate(date)}</time>
     <!-- <span aria-hidden="true" class="separator">·</span> -->
     <div class="label-container">
-      {type && <Label type={type} />}
+      {typeValue && <Label type={typeValue} />}
       {
         externalUrl ? (
           <h3>
@@ -109,7 +113,7 @@ const postUrl = linkPrefix ? `${linkPrefix}/${slug}` : `/${slug}`;
     thumbnail && (
       <div class="thumbnail">
         {thumbnailImage ? (
-          hasDarkImage && darkThumbnailImage ? (
+          (hasDarkImage && darkThumbnailImage) || darkThumbnail ? (
             <div class="thumbnail-container">
               <Image
                 src={thumbnailImage.default || thumbnailImage}
@@ -118,13 +122,26 @@ const postUrl = linkPrefix ? `${linkPrefix}/${slug}` : `/${slug}`;
                 format="webp"
                 class="thumbnail-light"
               />
-              <Image
-                src={darkThumbnailImage.default || darkThumbnailImage}
-                alt={title}
-                loading="lazy"
-                format="webp"
-                class="thumbnail-dark"
-              />
+              {darkThumbnailImage ? (
+                <Image
+                  src={darkThumbnailImage.default || darkThumbnailImage}
+                  alt={title}
+                  loading="lazy"
+                  format="webp"
+                  class="thumbnail-dark"
+                />
+              ) : darkThumbnail && (
+                <img 
+                  src={
+                    typeof darkThumbnail === 'string' 
+                      ? darkThumbnail 
+                      : darkThumbnail?.url || darkThumbnail?.data?.attributes?.url
+                  } 
+                  alt={title} 
+                  loading="lazy" 
+                  class="thumbnail-dark"
+                />
+              )}
             </div>
           ) : (
             <Image
@@ -135,7 +152,40 @@ const postUrl = linkPrefix ? `${linkPrefix}/${slug}` : `/${slug}`;
             />
           )
         ) : (
-          <img src={thumbnail} alt={title} loading="lazy" />
+          darkThumbnail ? (
+            <div class="thumbnail-container">
+              <img 
+                src={
+                  typeof thumbnail === 'string' 
+                    ? thumbnail 
+                    : thumbnail?.url || thumbnail?.data?.attributes?.url
+                } 
+                alt={title} 
+                loading="lazy" 
+                class="thumbnail-light"
+              />
+              <img 
+                src={
+                  typeof darkThumbnail === 'string' 
+                    ? darkThumbnail 
+                    : darkThumbnail?.url || darkThumbnail?.data?.attributes?.url
+                } 
+                alt={title} 
+                loading="lazy" 
+                class="thumbnail-dark"
+              />
+            </div>
+          ) : (
+            <img 
+              src={
+                typeof thumbnail === 'string' 
+                  ? thumbnail 
+                  : thumbnail?.url || thumbnail?.data?.attributes?.url
+              } 
+              alt={title} 
+              loading="lazy" 
+            />
+          )
         )}
       </div>
     )
