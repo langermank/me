@@ -109,6 +109,41 @@ export async function fetchPostTypes() {
   return fetchFromStrapi('post-types');
 }
 
+export async function fetchDiyPostBySlug(slug) {
+  try {
+    const response = await safeFetch(`${strapiUrl}/api/diy-posts?populate=*&filters[slug][$eq]=${slug}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      signal: AbortSignal.timeout(10000)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const result = await response.json();
+    const post = result.data?.[0];
+    
+    if (!post) return null;
+    
+    // Process image URLs
+    if (post.thumbnail && post.thumbnail.url && !post.thumbnail.url.startsWith('http')) {
+      post.thumbnail.url = `${strapiUrl}${post.thumbnail.url}`;
+    }
+    if (post.darkThumbnail && post.darkThumbnail.url && !post.darkThumbnail.url.startsWith('http')) {
+      post.darkThumbnail.url = `${strapiUrl}${post.darkThumbnail.url}`;
+    }
+    
+    return post;
+  } catch (error) {
+    console.error(`Error fetching DIY post by slug ${slug}:`, error.message);
+    return null;
+  }
+}
+
 // Legacy alias for backward compatibility
 export async function fetchPosts() {
   return fetchCaseStudies();

@@ -5,6 +5,22 @@
 @import 'open-props/easings';
 @import 'open-props/shadows';
 
+@font-face {
+  font-family: 'Monaspace Radon';
+  src: url('../fonts/MonaspaceRadon-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Monaspace Radon';
+  src: url('../fonts/MonaspaceRadon-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 @property --header-height {
   syntax: '<length>';
   inherits: true;
@@ -15,6 +31,12 @@
   syntax: '<length>';
   inherits: true;
   initial-value: 100px;
+}
+
+@property --diy-title-size {
+  syntax: '<length>';
+  inherits: true;
+  initial-value: 24px;
 }
 
 @property --title-opacity {
@@ -44,6 +66,7 @@
   --label-borderRadius: 4px;
   --body-fontSize: 16px;
   --body-lineHeight: 1.5;
+  --diy-title-lineHeight: 1.2;
   --filter-fontSize: var(--size-16);
   --filter-lineHeight: 1;
   --header-height: 75px;
@@ -58,6 +81,7 @@
   --header-animation-range: 0 150px;
   --header-animation: shrink-header linear both;
   --headshot-width: 100px;
+  --diy-title-size: 24px;
   --intro-gap: var(--size-16);
   --intro-margin-block-start: var(--header-margin-block-end);
   --social-links-gap: var(--size-8);
@@ -65,6 +89,7 @@
   --post-index-gap: var(--size-32);
   --main-gap: var(--size-32);
   --title-opacity: 1;
+  --monospace-font: 'Monaspace Radon';
 }
 
 /* color */
@@ -110,6 +135,8 @@
   color: var(--text);
   background: transparent;
   padding: 0;
+  display: flex;
+  justify-content: center;
 
   & svg {
     width: calc(var(--body-fontSize) * 1.25);
@@ -278,6 +305,8 @@ header {
       display: flex;
       gap: 1.5rem;
       font-size: var(--body-fontSize);
+      flex-wrap: nowrap;
+      align-items: center;
     }
   }
 }
@@ -438,7 +467,7 @@ header {
   gap: var(--post-index-gap);
 }
 
-.diy-site {
+/* .diy-site {
   background: linear-gradient(90deg, var(--bg) 15px, transparent 1%) 50%,
     linear-gradient(var(--bg) 15px, transparent 1%) 50%, hsl(var(--stone-5-hsl) / 80%);
   background-size: var(--size-16) var(--size-16);
@@ -448,6 +477,43 @@ header {
     border: solid 1px var(--diy-card-border);
     padding: calc(var(--post-index-gap) / 2);
     border-radius: 6px;
+  }
+} */
+
+.diy-site {
+
+  body {
+    grid-template-areas:
+      'header body'
+      'nav body';
+    /* grid-template-columns: 100px auto;
+    column-gap: var(--body-gap);
+    max-inline-size: var(--max-inline-body-size);
+    margin: 0 auto; */
+  }
+
+  & .diy-post {
+    h1 {
+      font-size: var(--title-fontSize);
+      font-weight: var(--title-fontWeight);
+    }
+  }
+}
+
+.diy-site-title {
+  font-family: var(--monospace-font);
+  font-weight: 700;
+  display: block;
+  font-size: 16px;
+  text-decoration: none;
+  line-height: var(--diy-title-lineHeight);
+  color: var(--text);
+  display: block;
+  grid-area: image;
+  text-box-trim: trim-end;
+
+  &:visited {
+    color: var(--text);
   }
 }
 
@@ -463,6 +529,7 @@ header {
     --main-gap: 4rem;
     --intro-margin-block-start: 0;
     --body-padding: 1.5rem;
+    /* --diy-title-lineHeight: 1.2; */
   }
 
   body {
@@ -477,6 +544,26 @@ header {
 
   .mobile-social-links {
     display: none;
+  }
+
+  .diy-site-title {
+    font-family: var(--monospace-font);
+    font-weight: 700;
+    display: block;
+    font-size: var(--diy-title-size);
+    text-decoration: none;
+    line-height: var(--diy-title-lineHeight);
+    color: var(--text);
+    display: block;
+    grid-area: image;
+    width: var(--headshot-width);
+    animation: shrink-image linear both;
+    animation-timeline: scroll();
+    animation-range: var(--header-animation-range);
+
+    &:visited {
+      color: var(--text);
+    }
   }
 
   .headshot {
@@ -570,6 +657,7 @@ header {
 @keyframes shrink-image {
   to {
     --headshot-width: 50px;
+    --diy-title-size: 18px;
     min-width: unset;
   }
 }

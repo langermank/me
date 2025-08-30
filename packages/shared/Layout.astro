@@ -2,6 +2,8 @@
 import './styles/global.css';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
+import HeaderDiy from './HeaderDiy.astro';
+import FooterDiy from './FooterDiy.astro';
 // import TweakPane from './TweakPane.astro';
 
 export interface Props {
@@ -9,9 +11,10 @@ export interface Props {
   description?: string;
   ogImage?: string;
   siteType?: 'main' | 'diy'; // Optional prop to customize defaults
+  isDiySite?: boolean; // New prop to use DIY header/footer
 }
 
-const { title, description, ogImage, siteType } = Astro.props;
+const { title, description, ogImage, siteType, isDiySite } = Astro.props;
 
 // Dynamic default descriptions based on site type
 const getDefaultDescription = (type?: string) => {
@@ -65,9 +68,9 @@ const finalTitle = getFinalTitle(title, siteType);
 
   </head>
   <body>
-    <Header currentPath={Astro.url.pathname} />
+    {isDiySite ? <HeaderDiy /> : <Header currentPath={Astro.url.pathname} />}
     <slot />
-    <Footer />
+    {isDiySite ? <FooterDiy /> : <Footer />}
     <!-- <TweakPane /> -->
   </body>
 </html>

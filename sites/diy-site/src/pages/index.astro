@@ -4,13 +4,14 @@ import PostCard from '../../../../packages/shared/PostCard.astro';
 import { fetchDiyPosts } from '../../../../packages/shared/strapi.js';
 
 const posts = await fetchDiyPosts();
+console.log('DIY Posts from Strapi:', posts);
 const sortedPosts = posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---
 
-<Layout title="Katie Langerman" siteType="diy">
+<Layout title="Katie Langerman" siteType="diy" isDiySite={true}>
   <main>
     <section class="intro">
-      <p>This is going to say something nice someday.</p>
+      <p>Sharing some things that I do that are not on my computer.</p>
     </section>
 
     <section class="diy-posts">
@@ -25,13 +26,13 @@ const sortedPosts = posts.sort((a, b) => new Date(b.date).getTime() - new Date(a
                 date={new Date(post.date)}
                 thumbnail={post.thumbnail}
                 description={post.description}
-                hasMore={post.hasMore}
+                hasMore={post.content}
                 slug={post.slug}
-                linkPrefix="/diy"
                 type={post.type}
                 externalUrl={post.externalUrl}
-                hasDarkImage={post.hasDarkImage}
                 darkThumbnail={post.darkThumbnail}
+                emphasizeTitle
+                hideDate
               />
             ))}
           </div>
