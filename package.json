@@ -12,7 +12,7 @@
     "preview": "astro preview --root sites/main-site",
     "preview:main": "astro preview --root sites/main-site",
     "preview:diy": "astro preview --root sites/diy-site",
-    "astro": "astro",
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.1",
