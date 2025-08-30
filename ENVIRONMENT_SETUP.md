@@ -1,83 +1,49 @@
 # Environment Setup Guide
 
-**Current Setup:** Local development always uses production Strapi Cloud for content.
+**Current Setup:** Both sites always use production Strapi Cloud for content.
 
 ## Current Configuration
 
-**Main Site:** Can switch between local and production Strapi (currently uses production)
-- **Local Development:** `https://fruitful-harmony-26f2f31d62.strapiapp.com` 
-- **Production:** `https://fruitful-harmony-26f2f31d62.strapiapp.com`
-
-**DIY Site:** Always uses production Strapi (simplified setup)
+**Both Main Site & DIY Site:** Always use production Strapi (simplified setup)
 - **Local Development:** `https://fruitful-harmony-26f2f31d62.strapiapp.com`
 - **Production:** `https://fruitful-harmony-26f2f31d62.strapiapp.com`
 
-## Available Commands (for future use if needed)
+## Development Workflow
 
-Switch main site to local Strapi:
 ```bash
-npm run env:local
+# Start main site (always uses production Strapi content)
+npm run dev:main
+
+# Start DIY site (always uses production Strapi content)  
+npm run dev:diy
+
+# Add/edit content in Strapi Cloud admin
+# Restart dev server to see new content
 ```
 
-Switch main site to production Strapi:
+## Benefits
+
+- ✅ **Simplified** - No environment switching needed
+- ✅ **Consistent** - Both sites use the same content source
+- ✅ **Fast** - No local Strapi setup required
+- ✅ **Real content** - Always see your actual production content while developing
+
+## For Strapi Development
+
+If you need to work on Strapi schema changes:
+
 ```bash
-npm run env:production
+# Start local Strapi for schema development
+cd packages/cms && npm run dev
+
+# Temporarily change STRAPI_URL in .env files to http://localhost:1337
+# Make your schema changes
+# Deploy schema changes to production
+# Change STRAPI_URL back to production
 ```
 
-Check current environment:
-```bash
-npm run env:status
-```
+## Files
 
-## Individual Site Commands
-
-Switch only main site:
-```bash
-npm run env:main:local        # Local Strapi
-npm run env:main:production   # Production Strapi
-```
-
-Switch only DIY site:
-```bash
-npm run env:diy:local         # Local Strapi
-npm run env:diy:production    # Production Strapi
-```
-
-## Setup
-
-1. **Update your production URLs:**
-   - Edit `sites/main-site/.env.production`
-   - Edit `sites/diy-site/.env.production` 
-   - Replace `https://your-strapi-cloud-url.com` with your actual Strapi Cloud URL
-
-2. **Default to local environment:**
-   ```bash
-   npm run env:local
-   ```
-
-## Workflow
-
-### For Development & Schema Changes:
-```bash
-npm run env:local        # Use local Strapi
-cd packages/cms && npm run dev  # Start local Strapi
-npm run dev             # Start main site
-```
-
-### For Testing with Production Content:
-```bash
-npm run env:production   # Switch to production Strapi
-npm run dev             # Start site with production content
-```
-
-### For Production Deployment:
-- Your deployed site should have `STRAPI_URL` pointing to your Strapi Cloud URL
-- Environment switching only affects local development
-
-## Files Created
-
-- `.env.local` - Local Strapi configuration
-- `.env.production` - Production Strapi configuration  
-- `switch-env.js` - Environment switching script
-
-The active `.env` file is created by copying from `.env.local` or `.env.production`.
+- `sites/main-site/.env` - Production Strapi configuration
+- `sites/diy-site/.env` - Production Strapi configuration
+- `.env.example` - Template for new setups

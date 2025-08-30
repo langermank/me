@@ -9,14 +9,11 @@ const isDiyDomain = Astro.site?.hostname?.includes('diy') || false;
 
 // Dynamic URL configuration
 const mainSiteUrl = import.meta.env.PROD ? 'https://katielangerman.com' : 'http://localhost:4321';
-const diySiteUrl = import.meta.env.PROD ? 'https://katielangerman.diy' : 'http://localhost:4322';
 
 const workUrl = isDiyDomain ? mainSiteUrl : '/';
-const notWorkUrl = isDiyDomain ? '/' : diySiteUrl;
 
 // Determine current page for aria-current
 const isOnWorkSite = !isDiyDomain; // Main site is "work"
-const isOnDiySite = isDiyDomain; // DIY site is "not work"
 
 // More robust path matching for production
 const currentPath = Astro.url.pathname.replace(/\/$/, '') || '/'; // Remove trailing slash, except for root

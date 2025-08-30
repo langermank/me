@@ -1,8 +1,5 @@
-// Force production Strapi URL for all environments
+// Default to production Strapi URL
 const strapiUrl = import.meta.env.STRAPI_URL || 'https://fruitful-harmony-26f2f31d62.strapiapp.com';
-
-// Debug: log what URL we're actually using
-console.log(`🌐 Using Strapi URL: ${strapiUrl}`);
 
 // Fallback fetch function for Node.js environments
 async function safeFetch(url, options = {}) {
