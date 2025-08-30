@@ -12,7 +12,12 @@
     "preview": "astro preview --root sites/main-site",
     "preview:main": "astro preview --root sites/main-site",
     "preview:diy": "astro preview --root sites/diy-site",
-    "astro": "astro"
+    "astro": "astro",
+    "env:local": "node sites/main-site/switch-env.js local",
+    "env:production": "node sites/main-site/switch-env.js production",
+    "env:status": "echo 'Main site:' && grep STRAPI_URL sites/main-site/.env 2>/dev/null && echo 'DIY site:' && grep STRAPI_URL sites/diy-site/.env 2>/dev/null || echo 'Some .env files missing'",
+    "env:main:local": "node sites/main-site/switch-env.js local",
+    "env:main:production": "node sites/main-site/switch-env.js production"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.1",

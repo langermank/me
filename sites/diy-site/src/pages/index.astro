@@ -1,10 +1,10 @@
 ---
 import Layout from '../../../../packages/shared/Layout.astro';
-import { getCollection } from 'astro:content';
 import PostCard from '../../../../packages/shared/PostCard.astro';
+import { fetchDiyPosts } from '../../../../packages/shared/strapi.js';
 
-const diyPosts = await getCollection('diy');
-const sortedPosts = diyPosts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const posts = await fetchDiyPosts();
+const sortedPosts = posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 ---
 
 <Layout title="Katie Langerman" siteType="diy">
@@ -21,12 +21,17 @@ const sortedPosts = diyPosts.sort((a, b) => b.data.date.getTime() - a.data.date.
           <div class="post-index">
             {sortedPosts.map((post) => (
               <PostCard
-                title={post.data.title}
-                date={post.data.date}
-                thumbnail={post.data.thumbnail}
-                description={post.data.description}
-                hasMore={true}
+                title={post.title}
+                date={new Date(post.date)}
+                thumbnail={post.thumbnail}
+                description={post.description}
+                hasMore={post.hasMore}
                 slug={post.slug}
+                linkPrefix="/diy"
+                type={post.type}
+                externalUrl={post.externalUrl}
+                hasDarkImage={post.hasDarkImage}
+                darkThumbnail={post.darkThumbnail}
               />
             ))}
           </div>
