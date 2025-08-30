@@ -27,8 +27,11 @@
 
 <script>
   class ThemeToggle {
-    static instance = null;
-    static isInitialized = false;
+    static instance: ThemeToggle | null = null;
+    static isInitialized: boolean = false;
+    
+    html: HTMLElement;
+    toggles: HTMLElement[];
 
     constructor() {
       // Singleton pattern - only create one instance
@@ -57,7 +60,7 @@
       this.setTheme(savedTheme);
 
       // Add click listeners to all toggle buttons
-      this.toggles.forEach(toggle => {
+      this.toggles.forEach((toggle: HTMLElement) => {
         toggle.addEventListener('click', () => {
           this.toggleTheme();
         });
@@ -73,12 +76,12 @@
       });
     }
 
-    setTheme(theme) {
+    setTheme(theme: string) {
       this.html.classList.remove('light-theme', 'dark-theme');
       this.html.classList.add(`${theme}-theme`);
 
       // Update all toggle buttons
-      this.toggles.forEach(toggle => {
+      this.toggles.forEach((toggle: HTMLElement) => {
         const sunIcon = toggle.querySelector('.sun-icon');
         const moonIcon = toggle.querySelector('.moon-icon');
         const label = toggle.querySelector('.theme-label');
