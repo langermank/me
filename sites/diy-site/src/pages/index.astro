@@ -10,10 +10,6 @@ const sortedPosts = posts.sort((a, b) => new Date(b.date).getTime() - new Date(a
 
 <Layout title="Katie Langerman" siteType="diy" isDiySite={true}>
   <main>
-    <section class="intro">
-      <p>Sharing some things that I do that are not on my computer.</p>
-    </section>
-
     <section class="diy-posts">
       {
         sortedPosts.length === 0 ? (

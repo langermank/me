@@ -246,16 +246,12 @@ header {
   display: grid;
   grid-template: 'title nav' auto / auto max-content;
   padding-block: var(--header-padding-block);
-  /* margin-block-end: var(--header-margin-block-end); */
   position: sticky;
   top: 0;
   background: var(--bg);
   z-index: 1;
   align-items: center;
   height: var(--header-height);
-  /* backdrop-filter: saturate(180%) blur(20px);
-  background: rgba(255, 255, 255, 0.92); */
-  /* box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px; */
 }
 
 .site-title {
@@ -483,13 +479,35 @@ header {
 .diy-site {
 
   body {
+    padding-block: var(--header-padding-block);
     grid-template-areas:
-      'header body'
-      'nav body';
+      'header'
+      'body';
     /* grid-template-columns: 100px auto;
     column-gap: var(--body-gap);
     max-inline-size: var(--max-inline-body-size);
     margin: 0 auto; */
+  }
+
+  header {
+    /* grid-area: header;
+    display: grid;
+    grid-template: 'title nav' auto / auto max-content; */
+    padding-block: 0;
+    /* position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 1;
+    align-items: center;
+    height: var(--header-height); */
+
+    & .site-nav ul {
+      display: flex;
+      gap: 1.5rem;
+      font-size: var(--body-fontSize);
+      flex-wrap: nowrap;
+      align-items: center;
+    }
   }
 
   & .diy-post {
@@ -530,6 +548,38 @@ header {
     --intro-margin-block-start: 0;
     --body-padding: 1.5rem;
     /* --diy-title-lineHeight: 1.2; */
+  }
+
+  .diy-site {
+    body {
+      padding-block: var(--header-padding-block);
+      grid-template-areas:
+        'header body';
+      /* grid-template-columns: 100px auto;
+      column-gap: var(--body-gap);
+      max-inline-size: var(--max-inline-body-size);
+      margin: 0 auto; */
+    }
+
+    header {
+      /* grid-area: header;
+      display: grid;
+      grid-template: 'title nav' auto / auto max-content; */
+      /* display: grid; */
+      /* grid-template-columns: 1fr; */
+      padding-block: 0;
+      /* grid-gap: var(--header-padding-block); */
+      /* position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 1;
+      align-items: center;
+      height: var(--header-height); */
+    }
+
+    & .diy-site-title {
+      padding-block-end: var(--header-padding-block);
+    }
   }
 
   body {
