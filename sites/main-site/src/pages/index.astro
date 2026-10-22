@@ -3,12 +3,12 @@ import Layout from '../../../../packages/shared/Layout.astro';
 import PostCard from '../../../../packages/shared/PostCard.astro';
 import Label from '../../../../packages/shared/Label.astro';
 import { getPostTypeById } from '../../../../packages/shared/postTypes';
-import { fetchCaseStudies } from '../../../../packages/shared/strapi.js';
+import { getCollection } from 'astro:content';
 
-const posts = await fetchCaseStudies();
+const posts = (await getCollection('work')).map(({ data, slug }) => ({ ...data, slug }));
 const sortedPosts = posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-// Get unique types present in Strapi content and their display labels
+// Get unique types present in portfolio content and their display labels
 const uniqueTypeIds = [...new Set(sortedPosts.map((post) => {
   const typeValue = typeof post.type === 'string' ? post.type : post.type?.name || post.type?.displayName;
   return typeValue;
