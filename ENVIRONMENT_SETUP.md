@@ -1,6 +1,23 @@
-# Environment Setup Guide
+# Portfolio content recovery
 
-**Current Setup:** Both sites always use production Strapi Cloud for content.
+The main portfolio now builds from `sites/main-site/src/content/work/*.mdx`
+and the matching images in `sites/main-site/src/images/`. It does not require
+Strapi Cloud or `STRAPI_URL`. Edit the MDX frontmatter to update portfolio cards;
+set `hasDarkImage: true` to use a matching `-dark` image.
+
+This restores the published portfolio after its Strapi API and media domains
+became unavailable. Dates and image choices were reconciled against the published
+homepage on October 22, 2026. Images are optimized and included in the static build,
+so visitors no longer depend on the CMS media host.
+
+Run `npm ci` and `npm run build:main` to build, or `npm run dev:main` to preview.
+The DIY site still uses the Strapi integration described below.
+
+---
+
+## Previous Strapi setup (still applies to the DIY site)
+
+**Previous setup:** Both sites used production Strapi Cloud for content.
 
 ## Current Configuration
 
